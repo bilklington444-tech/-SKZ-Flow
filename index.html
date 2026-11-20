@@ -1,0 +1,3472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SKZ Flow 🐾✨</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Quicksand:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light;
+      --bg-main: #f5f3ff;
+      --bg-card: #ffffff;
+      --bg-muted: #ede9fe;
+      --bg-input: #f3f0ff;
+      --text-main: #1e1b2e;
+      --text-sub: #5b5575;
+      --border-color: #ddd6fe;
+      --card-shadow: 0 8px 24px -6px rgba(30, 27, 46, 0.08), 0 2px 6px -2px rgba(30, 27, 46, 0.04);
+
+      /* Dynamic SKZOO Accent Variables */
+      --accent: #8b5cf6;
+      --accent-hover: #7c3aed;
+      --accent-text: #7c3aed;
+      --accent-btn-text: #ffffff;
+      --accent-soft: rgba(139, 92, 246, 0.14);
+      --accent-glow: rgba(139, 92, 246, 0.28);
+      --hero-grad: linear-gradient(135deg, #8b5cf6 0%, #a855f7 55%, #6366f1 100%);
+      --quote-grad: linear-gradient(135deg, rgba(139, 92, 246, 0.14) 0%, rgba(168, 85, 247, 0.09) 100%);
+    }
+
+    body.dark-mode {
+      color-scheme: dark;
+      --bg-main: #0b0a12;
+      --bg-card: #13111f;
+      --bg-muted: #1b182c;
+      --bg-input: #1d1a30;
+      --text-main: #f4f2ff;
+      --text-sub: #a39ec0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      min-height: 100vh;
+      transition: background-color 0.28s ease, color 0.28s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .font-cute {
+      font-family: 'Quicksand', sans-serif;
+    }
+
+    .theme-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      box-shadow: var(--card-shadow);
+      transition: background-color 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease;
+    }
+
+    .theme-muted {
+      background-color: var(--bg-muted);
+      border: 1px solid var(--border-color);
+      transition: background-color 0.28s ease, border-color 0.28s ease;
+    }
+
+    .theme-input {
+      background-color: var(--bg-input);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      transition: background-color 0.28s ease, color 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease;
+    }
+
+    .theme-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent-soft);
+    }
+
+    .theme-input::placeholder {
+      color: var(--text-sub);
+      opacity: 0.78;
+    }
+
+    select.theme-input option {
+      background-color: var(--bg-card);
+      color: var(--text-main);
+    }
+
+    .theme-text-sub {
+      color: var(--text-sub);
+    }
+
+    .accent-text {
+      color: var(--accent-text);
+      transition: color 0.28s ease;
+    }
+
+    body.dark-mode .accent-text {
+      text-shadow: 0 0 12px var(--accent-glow);
+    }
+
+    .accent-bg {
+      background-color: var(--accent);
+      color: var(--accent-btn-text);
+      box-shadow: 0 4px 14px -2px var(--accent-glow);
+      transition: background-color 0.28s ease, color 0.28s ease, box-shadow 0.28s ease;
+    }
+
+    .accent-bg:hover {
+      background-color: var(--accent-hover);
+    }
+
+    .accent-soft-bg {
+      background-color: var(--accent-soft);
+      color: var(--accent-text);
+      border: 1px solid var(--border-color);
+      transition: background-color 0.28s ease, color 0.28s ease, border-color 0.28s ease;
+    }
+
+    .accent-ring {
+      border-color: var(--accent) !important;
+      box-shadow: 0 0 0 2px var(--accent), 0 0 14px var(--accent-glow);
+    }
+
+    .balance-gradient {
+      background: var(--hero-grad);
+      border: 1px solid var(--border-color);
+      box-shadow: 0 12px 28px -6px var(--accent-glow);
+      transition: background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+
+    .quote-gradient {
+      background: var(--quote-grad);
+      border: 1px solid var(--border-color);
+      box-shadow: var(--card-shadow);
+      transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-3px); }
+    }
+    .animate-float {
+      animation: floatSlow 3s ease-in-out infinite;
+    }
+
+    #confettiCanvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 100;
+    }
+  </style>
+</head>
+<body class="pb-12">
+
+  <canvas id="confettiCanvas"></canvas>
+
+  <!-- Toast Notification -->
+  <div id="toastBox" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 hidden theme-card text-xs font-bold px-4 py-2.5 rounded-full shadow-xl">
+    <span id="toastMessage" class="accent-text">Saved!</span>
+  </div>
+
+  <div class="max-w-md mx-auto px-4 pt-5 space-y-4">
+
+    <!-- TOP HEADER -->
+    <header class="flex items-center justify-between gap-2">
+      <div class="flex items-center gap-3 min-w-0">
+        <button id="openMascotBtn" type="button" class="w-12 h-12 shrink-0 rounded-full theme-card flex items-center justify-center text-2xl animate-float active:scale-95 transition" title="Choose SKZOO Mascot">
+          <span id="headerMascotEmoji">🥟</span>
+        </button>
+        <div class="min-w-0">
+          <h1 class="text-lg font-extrabold tracking-tight accent-text font-cute truncate">
+            SKZ Flow 🐾✨
+          </h1>
+          <p id="headerMascotSub" class="text-[11px] font-semibold theme-text-sub truncate">
+            Dumpling • Hyunjin
+          </p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-1.5 shrink-0">
+        <button id="openCurrencyBtn" type="button" class="px-2.5 py-1.5 rounded-xl theme-card text-xs font-bold active:scale-95 transition" title="Change Currency">
+          <span id="headerCurrencyBadge" class="accent-text">৳ ✏️</span>
+        </button>
+        <button id="darkModeToggleBtn" type="button" class="w-9 h-9 rounded-xl theme-card flex items-center justify-center text-sm active:scale-95 transition" title="Toggle Light / Soothing Neon Dark Mode">
+          <span id="darkModeIcon">🌙</span>
+        </button>
+        <button id="openResetModalBtn" type="button" class="w-9 h-9 rounded-xl theme-card flex items-center justify-center text-sm active:scale-95 transition" title="Reset All Data">
+          🔄
+        </button>
+      </div>
+    </header>
+
+    <!-- QUOTE BANNER -->
+    <section class="quote-gradient rounded-[20px] p-3.5 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-2.5 min-w-0">
+        <span id="quoteMascotEmoji" class="text-xl shrink-0">🥟</span>
+        <p id="quoteText" class="text-xs italic font-medium leading-snug">
+          "Let's eat delicious food and stay healthy!" — Hyunjin 🥟
+        </p>
+      </div>
+      <div class="flex items-center gap-1.5 shrink-0">
+        <button id="openQuoteLibraryBtn" type="button" class="w-8 h-8 rounded-xl theme-card flex items-center justify-center text-xs active:scale-95 transition" title="Quote Library">
+          ✏️
+        </button>
+        <button id="newQuoteBtn" type="button" class="text-[11px] font-bold accent-bg px-3 py-1.5 rounded-xl active:scale-95 transition">
+          New Paw Quote 🐾
+        </button>
+      </div>
+    </section>
+
+    <!-- MAIN BALANCE CARD -->
+    <section class="balance-gradient rounded-[24px] p-5 text-white">
+      <div class="flex items-start justify-between gap-2 mb-4">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-white/85 block mb-1">Current Available Cash</span>
+          <div id="displayAvailableCash" class="text-3xl font-extrabold tracking-tight font-cute drop-shadow-sm">৳ 0</div>
+        </div>
+        <button id="openInitialModalBtn" type="button" class="px-3 py-1.5 rounded-xl bg-black/25 hover:bg-black/35 backdrop-blur-sm text-white text-xs font-bold border border-white/25 active:scale-95 transition shrink-0">
+          Set Initial Cash
+        </button>
+      </div>
+
+      <div class="grid grid-cols-4 gap-1.5 pt-3 border-t border-white/25 text-center">
+        <div class="bg-black/25 backdrop-blur-xs rounded-xl p-2">
+          <span class="text-[9px] uppercase font-bold text-white/80 block">Initial</span>
+          <span id="displayInitialCash" class="text-[11px] font-extrabold">৳ 0</span>
+        </div>
+        <div class="bg-black/25 backdrop-blur-xs rounded-xl p-2">
+          <span class="text-[9px] uppercase font-bold text-white/80 block">Spent</span>
+          <span id="displayTotalSpent" class="text-[11px] font-extrabold">৳ 0</span>
+        </div>
+        <div class="bg-black/25 backdrop-blur-xs rounded-xl p-2">
+          <span class="text-[9px] uppercase font-bold text-white/80 block">Saved</span>
+          <span id="displayTotalSaved" class="text-[11px] font-extrabold">৳ 0</span>
+        </div>
+        <div class="bg-black/25 backdrop-blur-xs rounded-xl p-2">
+          <span class="text-[9px] uppercase font-bold text-white/80 block">Owed</span>
+          <span id="displayTotalOwed" class="text-[11px] font-extrabold">৳ 0</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- NAVIGATION TABS -->
+    <nav class="theme-card p-1.5 flex items-center gap-1 overflow-x-auto no-scrollbar">
+      <button type="button" data-tab="expenses" class="tab-btn px-3.5 py-2 rounded-2xl text-xs font-bold accent-bg whitespace-nowrap transition">
+        🐱 Expenses
+      </button>
+      <button type="button" data-tab="shared" class="tab-btn px-3.5 py-2 rounded-2xl text-xs font-bold theme-text-sub whitespace-nowrap transition">
+        🏘️ Shared
+      </button>
+      <button type="button" data-tab="calendar" class="tab-btn px-3.5 py-2 rounded-2xl text-xs font-bold theme-text-sub whitespace-nowrap transition">
+        🗓️ Calendar
+      </button>
+      <button type="button" data-tab="savings" class="tab-btn px-3.5 py-2 rounded-2xl text-xs font-bold theme-text-sub whitespace-nowrap transition">
+        🐷 Savings
+      </button>
+      <button type="button" data-tab="owed" class="tab-btn px-3.5 py-2 rounded-2xl text-xs font-bold theme-text-sub whitespace-nowrap transition">
+        🤝 Owed
+      </button>
+      <button type="button" data-tab="charts" class="tab-btn px-3.5 py-2 rounded-2xl text-xs font-bold theme-text-sub whitespace-nowrap transition">
+        📊 Charts
+      </button>
+    </nav>
+
+    <!-- TAB 1: EXPENSES -->
+    <section id="tab-expenses" class="tab-content space-y-3">
+      <div class="flex items-center justify-between gap-2">
+        <div class="flex items-center gap-2 min-w-0">
+          <h2 class="text-base font-extrabold font-cute truncate">Expenses & Bills</h2>
+          <span id="widgetCountBadge" class="text-[11px] font-bold accent-soft-bg px-2.5 py-0.5 rounded-full shrink-0">0</span>
+        </div>
+        <div class="flex items-center gap-1.5 shrink-0">
+          <button id="openCategoryManagerBtn" type="button" class="px-2.5 py-2 rounded-xl theme-card text-xs font-bold active:scale-95 transition" title="Manage Custom Categories">
+            🏷️
+          </button>
+          <button id="openNewWidgetModalBtn" type="button" class="px-3.5 py-2 rounded-xl accent-bg text-xs font-bold active:scale-95 transition">
+            + New Cute Widget 🐾
+          </button>
+        </div>
+      </div>
+
+      <div id="widgetsContainer" class="space-y-3"></div>
+    </section>
+
+    <!-- TAB 2: SHARED ACCOUNT SPACE -->
+    <section id="tab-shared" class="tab-content space-y-3 hidden">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-base font-extrabold font-cute">Shared Spaces 🏘️✨</h2>
+          <p class="text-[11px] theme-text-sub">Deducts from space budget, not your main wallet</p>
+        </div>
+        <button id="openNewSharedSpaceModalBtn" type="button" class="px-3.5 py-2 rounded-xl accent-bg text-xs font-bold active:scale-95 transition">
+          + New Space
+        </button>
+      </div>
+
+      <div id="sharedSpacesContainer" class="space-y-3"></div>
+    </section>
+
+    <!-- TAB 3: CALENDAR -->
+    <section id="tab-calendar" class="tab-content space-y-3 hidden">
+      <div class="theme-card p-4 space-y-3">
+        <div class="flex items-center justify-between">
+          <button id="prevMonthBtn" type="button" class="w-8 h-8 rounded-xl theme-muted font-bold text-xs flex items-center justify-center active:scale-95 transition">◀</button>
+          <h2 id="calendarMonthLabel" class="text-sm font-extrabold font-cute accent-text">Month Year</h2>
+          <button id="nextMonthBtn" type="button" class="w-8 h-8 rounded-xl theme-muted font-bold text-xs flex items-center justify-center active:scale-95 transition">▶</button>
+        </div>
+
+        <div class="grid grid-cols-7 gap-1 text-center text-[10px] font-bold theme-text-sub uppercase pt-1">
+          <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+        </div>
+
+        <div id="calendarGrid" class="grid grid-cols-7 gap-1.5"></div>
+      </div>
+    </section>
+
+    <!-- TAB 4: SAVINGS -->
+    <section id="tab-savings" class="tab-content space-y-3 hidden">
+      <!-- CHARACTER-FREE COZY SCENE (SUNLIT ROOM <-> COZY FOREST TOGGLE) -->
+      <div id="cozyRoomCard" class="theme-card p-4 space-y-3">
+        <div class="flex items-center justify-between gap-2">
+          <div class="min-w-0">
+            <h3 id="cozySceneTitle" class="text-sm font-extrabold font-cute flex items-center gap-1.5 truncate">
+              <span>Sunlit Room 🪟✨</span>
+            </h3>
+            <p id="cozyShelfSub" class="text-[11px] theme-text-sub truncate">
+              Peak Saved: <strong class="accent-text">৳ 0</strong> • Unlocks stay forever!
+            </p>
+          </div>
+          <div class="flex items-center gap-1.5 shrink-0">
+            <button id="toggleSceneModeBtn" type="button" class="px-2.5 py-1.5 rounded-xl theme-muted text-[11px] font-bold active:scale-95 transition" title="Switch between Sunlit Room and Cozy Forest">
+              🌲 Forest
+            </button>
+            <button id="openCustomizeMilestonesBtn" type="button" class="px-2.5 py-1.5 rounded-xl accent-soft-bg text-[11px] font-bold active:scale-95 transition">
+              ✏️ Milestones
+            </button>
+          </div>
+        </div>
+
+        <!-- Interactive Character-Free Scene Stage -->
+        <div id="cozyRoomStage" class="relative w-full h-52 rounded-3xl overflow-hidden border select-none cursor-pointer transition" style="border-color: var(--border-color); background: linear-gradient(180deg, #fff8f1 0%, #fdf2f8 58%, #f3e8ff 58%, #ede9fe 100%);">
+
+          <!-- SCENE A: SUNLIT PASTEL ROOM (Zero Cartoons / Zero Mascots) -->
+          <div id="sunlitRoomBackdrop" class="absolute inset-0 pointer-events-none">
+            <div class="absolute inset-0 opacity-45" style="background: radial-gradient(circle at 82% 20%, var(--accent-soft) 0%, rgba(254, 240, 138, 0.25) 55%, transparent 80%);"></div>
+
+            <!-- Soft String Lights -->
+            <svg class="absolute top-0 inset-x-0 w-full h-8 opacity-90" viewBox="0 0 320 36" preserveAspectRatio="none">
+              <path d="M0,4 Q80,20 160,6 Q240,20 320,4" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.25"/>
+              <circle cx="48" cy="11" r="3" fill="#fde047"/>
+              <circle cx="106" cy="13" r="3" fill="#f9a8d4"/>
+              <circle cx="160" cy="6" r="3" fill="#93c5fd"/>
+              <circle cx="214" cy="13" r="3" fill="#fde047"/>
+              <circle cx="272" cy="11" r="3" fill="#c4b5fd"/>
+            </svg>
+
+            <!-- Cozy Sunlit Window with Curtains -->
+            <div class="absolute top-6 left-4 w-24 h-24 rounded-2xl border-2 overflow-hidden shadow-sm" style="border-color: #d97706; background: linear-gradient(180deg, #bae6fd 0%, #fef9c3 72%, #bbf7d0 72%, #86efac 100%);">
+              <span class="absolute top-2 right-2.5 text-[11px]">☀️</span>
+              <span class="absolute top-3 left-3 text-[8px] opacity-80">☁️</span>
+              <div class="absolute inset-y-0 left-0 w-3 bg-rose-300/80 border-r border-rose-400/40 rounded-r-md"></div>
+              <div class="absolute inset-y-0 right-0 w-3 bg-rose-300/80 border-l border-rose-400/40 rounded-l-md"></div>
+              <div class="w-full h-full grid grid-cols-2 grid-rows-2">
+                <div class="border-r border-b border-amber-700/25"></div>
+                <div class="border-b border-amber-700/25"></div>
+                <div class="border-r border-amber-700/25"></div>
+                <div></div>
+              </div>
+              <div class="absolute bottom-0 inset-x-0 h-1.5 bg-amber-600/80"></div>
+            </div>
+
+            <!-- Warm Wooden Bookshelf with Realistic Book Spines -->
+            <div class="absolute top-6 right-3.5 w-24 h-24 rounded-2xl border p-1.5 flex flex-col justify-between shadow-sm" style="border-color: #b45309; background: #fef3c7;">
+              <div class="flex items-end gap-1 h-8 px-1 border-b-2 border-amber-700/70 pb-0.5">
+                <span class="w-2 h-6 rounded-t-[2px] bg-rose-400 border-l border-rose-600/40"></span>
+                <span class="w-2.5 h-7 rounded-t-[2px] bg-sky-400 border-l border-sky-600/40"></span>
+                <span class="w-2 h-5 rounded-t-[2px] bg-amber-400 border-l border-amber-600/40"></span>
+                <span class="w-2 h-6.5 rounded-t-[2px] bg-violet-400 border-l border-violet-600/40"></span>
+                <span class="text-[10px] leading-none pb-0.5">✨</span>
+              </div>
+              <div class="flex items-end justify-between h-8 px-1 border-b-2 border-amber-700/70 pb-0.5">
+                <span class="text-xs leading-none">🫙</span>
+                <div class="flex items-end gap-0.5">
+                  <span class="w-2 h-5.5 rounded-t-[2px] bg-emerald-400"></span>
+                  <span class="w-2.5 h-6.5 rounded-t-[2px] bg-pink-400"></span>
+                  <span class="w-2 h-5 rounded-t-[2px] bg-indigo-400"></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Cozy Wooden Desk -->
+            <div class="absolute bottom-10 left-1/2 -translate-x-1/2 w-44 h-3.5 rounded-xl shadow-xs" style="background: #d97706;"></div>
+            <div class="absolute bottom-4 left-[calc(50%-72px)] w-2 h-6 rounded-b" style="background: #b45309;"></div>
+            <div class="absolute bottom-4 left-[calc(50%+64px)] w-2 h-6 rounded-b" style="background: #b45309;"></div>
+
+            <!-- Soft Round Rug -->
+            <div class="absolute bottom-2 left-1/2 -translate-x-1/2 w-56 h-7 rounded-[100%] border flex items-center justify-center" style="background: rgba(255, 255, 255, 0.72); border-color: var(--border-color);">
+              <span class="w-16 h-2.5 rounded-full opacity-55" style="background: var(--accent);"></span>
+            </div>
+          </div>
+
+          <!-- SCENE B: COZY FOREST (Peaceful Woodland, Sunbeams, Mossy Log, Soft Grass & Leaves) -->
+          <div id="cozyForestBackdrop" class="absolute inset-0 pointer-events-none hidden" style="background: linear-gradient(180deg, #dcfce7 0%, #ecfdf5 56%, #bbf7d0 56%, #86efac 100%);">
+            <!-- Soft Woodland Sunbeams -->
+            <div class="absolute inset-0 opacity-50" style="background: radial-gradient(circle at 50% 15%, rgba(254, 249, 195, 0.9) 0%, rgba(187, 247, 208, 0.35) 55%, transparent 80%);"></div>
+
+            <!-- Layered Woodland Trees & Fern Accents -->
+            <div class="absolute top-5 left-3 flex items-end gap-1 opacity-90">
+              <span class="text-3xl leading-none">🌲</span>
+              <span class="text-2xl leading-none">🌳</span>
+            </div>
+            <div class="absolute top-6 right-3 flex items-end gap-1 opacity-90">
+              <span class="text-2xl leading-none">🌿</span>
+              <span class="text-3xl leading-none">🌲</span>
+            </div>
+            <span class="absolute top-8 left-1/2 -translate-x-1/2 text-[10px] opacity-75">🍃 ✨ 🍃</span>
+
+            <!-- Mossy Wooden Log Table -->
+            <div class="absolute bottom-10 left-1/2 -translate-x-1/2 w-44 h-4 rounded-full border shadow-xs flex items-center justify-around px-3" style="background: #92400e; border-color: #4d7c0f;">
+              <span class="w-6 h-1.5 rounded-full bg-lime-500/70"></span>
+              <span class="w-8 h-1.5 rounded-full bg-lime-500/70"></span>
+            </div>
+            <div class="absolute bottom-4 left-[calc(50%-62px)] w-2.5 h-6 rounded-b" style="background: #78350f;"></div>
+            <div class="absolute bottom-4 left-[calc(50%+54px)] w-2.5 h-6 rounded-b" style="background: #78350f;"></div>
+
+            <!-- Soft Mossy Clearing & Fallen Leaves -->
+            <div class="absolute bottom-2 left-1/2 -translate-x-1/2 w-60 h-7 rounded-[100%] border flex items-center justify-around px-6" style="background: rgba(167, 243, 208, 0.85); border-color: rgba(22, 163, 74, 0.3);">
+              <span class="text-[10px]">🍂</span>
+              <span class="text-[10px]">🌿</span>
+              <span class="text-[10px]">🍃</span>
+            </div>
+          </div>
+
+          <!-- Placed Decorations Layer -->
+          <div id="cozyRoomPlacedLayer" class="absolute inset-0 z-20"></div>
+
+          <!-- Placement Hint Banner -->
+          <div id="cozyRoomHint" class="absolute top-2 left-1/2 -translate-x-1/2 z-30 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold accent-bg shadow pointer-events-none whitespace-nowrap">
+            Tap an unlocked item below to place it ✨
+          </div>
+        </div>
+
+        <!-- Selected Item Action Bar -->
+        <div id="cozyRoomActionBar" class="hidden theme-muted px-3 py-2 rounded-xl flex items-center justify-between gap-2 text-xs">
+          <span id="cozyRoomSelectedLabel" class="font-bold truncate">Selected: 🌱 Sprout</span>
+          <div class="flex items-center gap-1.5 shrink-0">
+            <button id="storeRoomItemBtn" type="button" class="px-2.5 py-1 rounded-lg bg-rose-500/15 text-rose-500 text-[10px] font-bold">
+              Put Away
+            </button>
+            <button id="deselectRoomItemBtn" type="button" class="px-2.5 py-1 rounded-lg theme-card text-[10px] font-bold">
+              Done
+            </button>
+          </div>
+        </div>
+
+        <!-- Unlocked & Locked Items Tray -->
+        <div id="cozyShelfGrid" class="grid grid-cols-4 gap-2"></div>
+      </div>
+
+      <div class="flex items-center justify-between">
+        <h2 class="text-base font-extrabold font-cute">Savings Goals 🐷✨</h2>
+        <button id="openNewGoalModalBtn" type="button" class="px-3.5 py-2 rounded-xl accent-bg text-xs font-bold active:scale-95 transition">
+          + New Goal
+        </button>
+      </div>
+
+      <div id="savingsContainer" class="space-y-3"></div>
+    </section>
+
+    <!-- TAB 5: OWED (BORROWED & LENT) -->
+    <section id="tab-owed" class="tab-content space-y-3 hidden">
+      <div class="theme-card p-1 grid grid-cols-2 gap-1">
+        <button type="button" data-owed-sub="borrowed" class="owed-sub-btn py-2 rounded-2xl text-xs font-bold accent-bg transition">
+          🤝 Money I Owe
+        </button>
+        <button type="button" data-owed-sub="lent" class="owed-sub-btn py-2 rounded-2xl text-xs font-bold theme-text-sub transition">
+          💸 Money I Lent
+        </button>
+      </div>
+
+      <div id="owed-sub-borrowed" class="space-y-3">
+        <div class="flex items-center justify-between">
+          <h2 class="text-sm font-extrabold font-cute">Money I Owe Log 🤝</h2>
+          <button id="openLogDebtModalBtn" type="button" class="px-3 py-1.5 rounded-xl accent-bg text-xs font-bold active:scale-95 transition">
+            + Log Borrowed
+          </button>
+        </div>
+        <div id="debtsList" class="space-y-2.5"></div>
+      </div>
+
+      <div id="owed-sub-lent" class="space-y-3 hidden">
+        <div class="flex items-center justify-between">
+          <h2 class="text-sm font-extrabold font-cute">Money I Lent Log 💸</h2>
+          <button id="openLogLentModalBtn" type="button" class="px-3 py-1.5 rounded-xl accent-bg text-xs font-bold active:scale-95 transition">
+            + Log Lent
+          </button>
+        </div>
+        <div id="lentList" class="space-y-2.5"></div>
+      </div>
+    </section>
+
+    <!-- TAB 6: CHARTS -->
+    <section id="tab-charts" class="tab-content space-y-3 hidden">
+      <div class="theme-card p-5 space-y-4">
+        <div class="text-center space-y-0.5">
+          <h2 class="text-base font-extrabold font-cute">Expense Breakdown 📊</h2>
+          <p class="text-[11px] theme-text-sub">Unique golden-angle colors & ranked top spending</p>
+        </div>
+        <div id="chartContainer" class="flex flex-col items-center justify-center space-y-4"></div>
+      </div>
+    </section>
+
+    <!-- DATA BACKUP & MANAGEMENT -->
+    <section class="theme-card p-4 space-y-3">
+      <h3 class="text-xs font-extrabold flex items-center gap-1.5">
+        <span>💾 Data Backup & Management:</span>
+      </h3>
+      <div class="grid grid-cols-2 gap-2.5">
+        <button id="exportJsonBtn" type="button" class="py-2.5 px-3 rounded-xl accent-soft-bg text-xs font-bold active:scale-95 transition text-center">
+          Export Data (Backup)
+        </button>
+        <label class="py-2.5 px-3 rounded-xl theme-muted text-xs font-bold active:scale-95 transition text-center cursor-pointer">
+          Import Data (Restore)
+          <input id="importJsonInput" type="file" accept=".json" class="hidden">
+        </label>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- MODAL: CHOOSE SKZOO MASCOT (OT8 IN EXACT ORDER) -->
+  <div id="mascotModal" class="fixed inset-0 bg-black/65 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <div class="theme-card p-5 w-full max-w-sm space-y-4">
+      <div class="flex justify-between items-center">
+        <div>
+          <h3 class="text-base font-extrabold font-cute">Choose SKZOO Companion 🐾</h3>
+          <p class="text-[11px] theme-text-sub">Distinct Pastel Light & Neon Dark themes per member</p>
+        </div>
+        <button type="button" data-close-modal="mascotModal" class="theme-text-sub text-sm font-bold px-2 py-1">✕</button>
+      </div>
+      <div id="mascotGrid" class="grid grid-cols-2 gap-2"></div>
+      <button type="button" data-close-modal="mascotModal" class="w-full py-2.5 rounded-xl accent-bg text-xs font-bold">Done 🐾</button>
+    </div>
+  </div>
+
+  <!-- MODAL: SET INITIAL CASH -->
+  <div id="initialModal" class="fixed inset-0 bg-black/65 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <div class="theme-card p-5 w-full max-w-sm space-y-4">
+      <div class="flex justify-between items-center">
+        <h3 class="text-base font-extrabold font-cute">Set Initial Cash 💰</h3>
+        <button type="button" data-close-modal="initialModal" class="theme-text-sub text-sm font-bold px-2 py-1">✕</button>
+      </div>
+      <input id="initialCashInput" type="number" step="any" min="0" placeholder="0.00" class="w-full px-3.5 py-2.5 rounded-xl theme-input text-sm font-bold focus:outline-none">
+      <button id="saveInitialCashBtn" type="button" class="w-full py-2.5 rounded-xl accent-bg text-xs font-bold">Save Initial Cash 🐾</button>
+    </div>
+  </div>
+
+  <!-- MODAL: CHANGE CURRENCY -->
+  <div id="currencyModal" class="fixed inset-0 bg-black/65 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <div class="theme-card p-5 w-full max-w-sm space-y-4">
+      <div class="flex justify-between items-center">
+        <h3 class="text-base font-extrabold font-cute">Currency Symbol ✏️</h3>
+        <button type="button" data-close-modal="currencyModal" class="theme-text-sub text-sm font-bold px-2 py-1">✕</button>
+      </div>
+      <input id="currencyInput" type="text" maxlength="5" placeholder="৳, Tk, $, €" class="w-full px-3.5 py-2.5 rounded-xl theme-input text-sm font-bold focus:outline-none">
+      <button id="saveCurrencyBtn" type="button" class="w-full py-2.5 rounded-xl accent-bg text-xs font-bold">Save Currency</button>
+    </div>
+  </div>
+
+  <!-- MODAL: NEW EXPENSE WIDGET -->
+  <div id="newWidgetModal" class="fixed inset-0 bg-black/65 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <form id="newWidgetForm" class="theme-card p-5 w-full max-w-sm space-y-3.5">
+      <div class="flex justify-between items-center">
+        <h3 class="text-base font-extrabold font-cute">New Expense Widget 🐱</h3>
+        <button type="button" data-close-modal="newWidgetModal" class="theme-text-sub text-sm font-bold px-2 py-1">✕</button>
+      </div>
+      <div>
+        <div class="flex items-center justify-between mb-1">
+          <label class="text-[10px] font-bold uppercase theme-text-sub">Category & Icon</label>
+          <button type="button" id="openCustomCategoryFromWidgetBtn" class="text-[10px] font-extrabold accent-text hover:underline">
+            + Add Custom Category ✨
+          </button>
+        </div>
+        <select id="widgetCategorySelect" class="w-full px-3 py-2.5 rounded-xl theme-input text-xs font-bold focus:outline-none"></select>
+      </div>
+      <div>
+        <label class="text-[10px] font-bold uppercase theme-text-sub block mb-1">Widget Title</label>
+        <input id="widgetTitleInput" type="text" required placeholder="e.g., Food / Mess, Hall Fee, Train" class="w-full px-3.5 py-2.5 rounded-xl theme-input text-xs font-semibold focus:outline-none">
+      </div>
+      <div>
+        <label class="text-[10px] font-bold uppercase theme-text-sub block mb-1">Target Budget</label>
+        <input id="widgetTargetInput" type="number" step="any" min="0" required placeholder="0.00" class="w-full px-3.5 py-2.5 rounded-xl theme-input text-xs font-bold focus:outline-none">
+      </div>
+      <div class="grid grid-cols-2 gap-2 pt-1">
+        <button type="button" data-close-modal="newWidgetModal" class="py-2.5 rounded-xl theme-muted text-xs font-bold">Cancel</button>
+        <button type="submit" class="py-2.5 rounded-xl accent-bg text-xs font-bold">Create 🐾</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- MODAL: CUSTOM CATEGORY & EMOJI CREATOR -->
+  <div id="customCategoryModal" class="fixed inset-0 bg-black/65 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <div class="theme-card p-5 w-full max-w-sm space-y-3.5 max-h-[88vh] flex flex-col">
+      <div class="flex justify-between items-center">
+        <div>
+          <h3 class="text-base font-extrabold font-cute">Custom Categories 🏷️✨</h3>
+          <p class="text-[11px] theme-text-sub">Pick any icon & create your own category</p>
+        </div>
+        <button type="button" data-close-modal="customCategoryModal" class="theme-text-sub text-sm font-bold px-2 py-1">✕</button>
+      </div>
+
+      <form id="customCategoryForm" class="theme-muted p-3 rounded-2xl space-y-2.5">
+        <div class="flex items-center gap-2">
+          <div id="selectedCustomEmojiBadge" class="w-10 h-10 rounded-xl theme-card flex items-center justify-center text-xl shrink-0">🐾</div>
+          <input id="customCategoryNameInput" type="text" required maxlength="28" placeholder="Category name (e.g., Skincare, Photocards)" class="flex-1 px-3 py-2.5 rounded-xl theme-input text-xs font-bold focus:outline-none">
+        </div>
+        <div>
+          <span class="text-[10px] font-bold uppercase theme-text-sub block mb-1.5">Tap an Icon (36 choices)</span>
+          <div id="emojiPickerGrid" class="grid grid-cols-6 gap-1.5 max-h-36 overflow-y-auto p-1"></div>
+        </div>
+        <button type="submit" class="w-full py-2.5 rounded-xl accent-bg text-xs font-bold active:scale-95 transition">
+          + Save Custom Category 🐾
+        </button>
+      </form>
+
+      <div class="space-y-1.5 overflow-y-auto pr-1 flex-1">
+        <span class="text-[10px] font-bold uppercase theme-text-sub block">Your Custom Categories</span>
+        <div id="customCategoriesList" class="space-y-1.5"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: ADD EXPENSE TO WIDGET -->
+  <div id="addExpenseModal" class="fixed inset-0 bg-black/65 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <form id="addExpenseForm" class="theme-card p-5 w-full max-w-sm space-y-3.5">
+      <div class="flex justify-between items-center">
+        <h3 id="addExpenseModalTitle" class="text-base font-extrabold font-cute">Add Expense</h3>
+        <button type="button" data-close-modal="addExpenseModal" class="theme-text-sub text-sm font-bold px-2 py-1">✕</button>
+      </div>
+      <input id="expItemNote" type="text" required placeholder="Item note (e.g., Iced Latte, Onions)" class="w-full px-3.5 py-2.5 rounded-xl theme-input text-xs font-semibold focus:outline-none">
+      <div class="grid grid-cols-2 gap-2.5">
+        <input id="expItemAmount" type="number" step="any" min="0.01" required placeholder="Amount" class="w-full px-3.5 py-2.5 rounded-xl theme-input text-xs font-bold focus:outline-none">
+        <input id="expItemDate" type="date" required class="w-full px-3.5 py-2.5 rounded-xl theme-input text-xs font-bold focus:outline-none">
+      </div>
+      <button type="submit" class="w-full py-2.5 rounded-xl accent-bg text-xs font-bold">Save Expense 🐾</button>
+    </form>
+  </div>
+
+  <!-- MODAL: ITEM NOTES FOR WIDGET -->
+  <div id="itemNotesModal" class="fixed inset-0 bg-black/65 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <div class="theme-card p-5 w-full max-w-sm space-y-3.5 max-h-[80vh] flex flex-col">
+      <div class="flex justify-between items-center">
+        <h3 id="itemNotesTitle" class="text-base font-extrabold font-cute">🧾 Item Notes</h3>
+        <button type="button" data-close-modal="itemNotesModal" class="theme-text-sub text-sm font-bold px-2 py-1">✕</button>
+      </div>
+      <div id="itemNotesList" class="space-y-2 overflow-y-auto pr-1"></div>
+    </div>
+  </div>
+
+  <!-- MODAL: NEW SHARED SPACE -->
+  <div id="newSharedSpaceModal" class="fixed inset-0 bg-black/65 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <form id="newSharedSpaceForm" class="theme-card p-5 w-full max-w-sm space-y-3.5">
+      <div class="flex justify-between items-center">
+        <h3 class="text-base font-extrabold font-cute">New Shared Space 🏘️</h3>
+        <button type="button" data-close-modal="newSharedSpaceModal" class="theme-text-sub text-sm font-bold px-2 py-1">✕</button>
+      </div>
+      <div>
+        <label class="text-[10px] font-bold uppercase theme-text-sub block mb-1">Space / Group Name</label>
+        <input id="sharedSpaceNameInput" type="text" required placeholder="e.g., Food, Room / Mess, Hangouts" class="w-full px-3.5 py-2.5 rounded-xl theme-input text-xs font-semibold focus:outline-none">
+      </div>
+      <div>
+        <label class="text-[10px] font-bold uppercase theme-text-sub block mb-1">Initial Shared Budget (Optional)</label>
+        <input id="sharedSpaceBudgetInput" type="number" step="any" min="0" placeholder="e.g., 2000 (deducts from this pool)" class="w-full px-3.5 py-2.5 rounded-xl theme-input text-xs font-bold focus:outline-none">
+      </div>
+      <div>
+        <label class="text-[10px] font-bold uppercase theme-text-sub block mb-1">Other Members (comma separated)</label>
+        <input id="sharedSpaceMembersInput" type="text" required placeholder="e.g., R, M (Me is included automatically)" class="w-full px-3.5 py-2.5 rounded-xl theme-input text-xs font-semibold focus:outline-none">
+      </div>
+      <button type="submit" class="w-full py-2.5 rounded-xl accent-bg text-xs font-bold">Create Shared Space ✨</button>
+    </form>
+  </div>
+
+  <!-- MODAL: EDIT SHARED SPACE BUDGET -->
+  <div id="editSharedBudgetModal" class="fixed inset-0 bg-black/65 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <form id="editSharedBudgetForm" class="theme-card p-5 w-full max-w-sm space-y-3.5">
+      <div class="flex justify-between items-center">
+        <h3 id="editSharedBudgetTitle" class="text-base font-extrabold font-cute">Set Shared Budget 💰</h3>
+        <button type="button" data-close-modal="editSharedBudgetModal" class="theme-text-sub text-sm font-bold px-2 py-1">✕</button>
+      </div>
+      <p class="text-[11px] theme-text-sub leading-relaxed">
+        Every bill added to this space deducts from this budget instead of your main cash wallet.
+      </p>
+      <div>
+        <label class="text-[10px] font-bold uppercase theme-text-sub block mb-1">Initial Budget Amount</label>
+        <input id="editSharedBudgetInput" type="number" step="any" min="0" required placeholder="e.g., 2000" class="w-full px-3.5 py-2.5 rounded-xl theme-input text-sm font-bold focus:outline-none">
+      </div>
+      <button type="submit" class="w-full py-2.5 rounded-xl accent-bg text-xs font-bold">Save Shared Budget ✨</button>
+    </form>
+  </div>
+
+  <!-- MODAL: QUICK TOP UP SHARED SPACE BUDGET -->
+  <div id="topUpSharedBudgetModal" class="fixed inset-0 bg-black/65 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <form id="topUpSharedBudgetForm" class="theme-card p-5 w-full max-w-sm space-y-3.5">
+      <div class="flex justify-between items-center">
+        <h3 id="topUpSharedBudgetTitle" class="text-base font-extrabold font-cute">Top Up Shared Budget ➕</h3>
+        <button type="button" data-close-modal="topUpSharedBudgetModal" class="theme-text-sub text-sm font-bold px-2 py-1">✕</button>
+      </div>
+      <p id="topUpSharedBudgetDesc" class="text-[11px] theme-text-sub leading-relaxed">
+        Add extra funds directly onto this space's existing budget pool without touching your main cash wallet.
+      </p>
+      <div>
+        <label class="text-[10px] font-bold uppercase theme-text-sub block mb-1">Amount to Add (+)</label>
+        <input id="topUpSharedBudgetInput" type="number" step="any" min="0.01" required placeholder="e.g., 500" class="w-full px-3.5 py-2.5 rounded-xl theme-input text-sm font-bold focus:outline-none">
+      </div>
+      <button type="submit" class="w-full py-2.5 rounded-xl accent-bg text-xs font-bold">Add to Space Budget ✨</button>
+    </form>
+  </div>
+
+  <!-- MODAL: ADD SHARED BILL -->
+  <div id="addSharedBillModal" class="fixed inset-0 bg-black/65 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <form id="addSharedBillForm" class="theme-card p-5 w-full max-w-sm space-y-3 max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-center">
+        <h3 id="addSharedBillTitle" class="text-base font-extrabold font-cute">Add Shared Bill 🧾</h3>
+        <button type="button" data-close-modal="addSharedBillModal" class="theme-text-sub text-sm font-bold px-2 py-1">✕</button>
+      </div>
+      <input id="sharedBillDescInput" type="text" required placeholder="Bill description (e.g., Groceries, Lunch)" class="w-full px-3.5 py-2.5 rounded-xl theme-input text-xs font-semibold focus:outline-none">
+      <div class="grid grid-cols-2 gap-2.5">
+        <div>
+          <label class="text-[10px] font-bold uppercase theme-text-sub block mb-1">Total Bill</label>
+          <input id="sharedBillAmountInput" type="number" step="any" min="0.01" required placeholder="0.00" class="w-full px-3.5 py-2 rounded-xl theme-input text-xs font-bold focus:outline-none">
+        </div>
+        <div>
+          <label class="text-[10px] font-bold uppercase theme-text-sub block mb-1">Who Paid?</label>
+          <select id="sharedBillPaidBySelect" class="w-full px-2.5 py-2 rounded-xl theme-input text-xs font-bold focus:outline-none"></select>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-2.5">
+        <div>
+          <label class="text-[10px] font-bold uppercase theme-text-sub block mb-1">Split Type</label>
+          <select id="sharedBillSplitTypeSelect" class="w-full px-2.5 py-2 rounded-xl theme-input text-xs font-bold focus:outline-none">
+            <option value="equal">Equal Split</option>
+            <option value="custom">Custom My Share</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-[10px] font-bold uppercase theme-text-sub block mb-1">My Share</label>
+          <input id="sharedBillMyShareInput" type="number" step="any" min="0" readonly placeholder="0.00" class="w-full px-3.5 py-2 rounded-xl theme-input text-xs font-bold opacity-80 focus:outline-none">
+        </div>
+      </div>
+      <div>
+        <label class="text-[10px] font-bold uppercase theme-text-sub block mb-1">Date</label>
+        <input id="sharedBillDateInput" type="date" required class="w-full px-3.5 py-2 rounded-xl theme-input text-xs font-bold focus:outline-none">
+      </div>
+
+      <!-- Optional Sync to Personal Expense -->
+      <div class="theme-muted p-3 rounded-2xl space-y-2">
+        <label class="flex items-start gap-2 cursor-pointer">
+          <input id="syncShareToPersonalCheck" type="checkbox" class="mt-0.5 rounded">
+          <span class="text-[11px] font-bold leading-snug">
+            Also deduct my share (<span id="syncSharePreviewAmt" class="accent-text">৳ 0</span>) from my main wallet
+          </span>
+        </label>
+        <p class="text-[10px] theme-text-sub pl-5 leading-snug">
+          Leave unchecked to deduct only from this Shared Space's budget.
+        </p>
+        <div id="syncShareWidgetPickerBox" class="hidden pt-1">
+          <label class="text-[10px] font-bold uppercase theme-text-sub block mb-1">Personal Expense Category</label>
+          <select id="syncShareWidgetSelect" class="w-full px-2.5 py-2 rounded-xl theme-input text-xs font-bold focus:outline-none"></select>
+        </div>
+      </div>
+
+      <button type="submit" class="w-full py-2.5 rounded-xl accent-bg text-xs font-bold">Save Shared Bill 🏘️</button>
+    </form>
+  </div>
+
+  <!-- MODAL: SHARED SPACE DETAILS & BILLS -->
+  <div id="sharedSpaceDetailModal" class="fixed inset-0 bg-black/65 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <div class="theme-card p-5 w-full max-w-sm space-y-3.5 max-h-[85vh] flex flex-col">
+      <div class="flex justify-between items-center">
+        <h3 id="sharedDetailTitle" class="text-base font-extrabold font-cute">Space Bills</h3>
+        <button type="button" data-close-modal="sharedSpaceDetailModal" class="theme-text-sub text-sm font-bold px-2 py-1">✕</button>
+      </div>
+      <div id="sharedDetailSummary" class="theme-muted p-3 rounded-2xl space-y-1.5 text-xs"></div>
+      <div id="sharedDetailBillsList" class="space-y-2 overflow-y-auto pr-1 flex-1"></div>
+    </div>
+  </div>
+
+  <!-- MODAL: DAILY SPENDING LOG (CALENDAR) -->
+  <div id="dailyLogModal" class="fixed inset-0 bg-black/65 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <div class="theme-card p-5 w-full max-w-sm space-y-3.5 max-h-[80vh] flex flex-col">
+      <div class="flex justify-between items-center">
+        <div>
+          <h3 class="text-base font-extrabold font-cute">🗓️ Daily Spending Log</h3>
+          <p id="dailyLogDateLabel" class="text-xs font-bold accent-text">Date</p>
+        </div>
+        <button type="button" data-close-modal="dailyLogModal" class="theme-text-sub text-sm font-bold px-2 py-1">✕</button>
+      </div>
+      <div id="dailyLogItems" class="space-y-2 overflow-y-auto pr-1"></div>
+      <div class="pt-2 border-t border-current/10 flex justify-between items-center">
+        <span class="text-xs font-bold theme-text-sub">Total Spent Today:</span>
+        <span id="dailyLogTotal" class="text-sm font-extrabold accent-text">৳ 0</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: NEW SAVINGS GOAL -->
+  <div id="newGoalModal" class="fixed inset-0 bg-black/65 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <form id="newGoalForm" class="theme-card p-5 w-full max-w-sm space-y-3.5">
+      <div class="flex justify-between items-center">
+        <h3 class="text-base font-extrabold font-cute">New Savings Goal 🐷</h3>
+        <button type="button" data-close-modal="newGoalModal" class="theme-text-sub text-sm font-bold px-2 py-1">✕</button>
+      </div>
+      <input id="goalTitleInput" type="text" required placeholder="Goal name (e.g., SKZ Concert)" class="w-full px-3.5 py-2.5 rounded-xl theme-input text-xs font-semibold focus:outline-none">
+      <input id="goalTargetInput" type="number" step="any" min="1" required placeholder="Target Amount" class="w-full px-3.5 py-2.5 rounded-xl theme-input text-xs font-bold focus:outline-none">
+      <button type="submit" class="w-full py-2.5 rounded-xl accent-bg text-xs font-bold">Start Goal 🐷</button>
+    </form>
+  </div>
+
+  <!-- MODAL: ADD TO SAVINGS GOAL -->
+  <div id="addSavingsModal" class="fixed inset-0 bg-black/65 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <form id="addSavingsForm" class="theme-card p-5 w-full max-w-sm space-y-3.5">
+      <div class="flex justify-between items-center">
+        <h3 class="text-base font-extrabold font-cute">Add to Savings 🐷</h3>
+        <button type="button" data-close-modal="addSavingsModal" class="theme-text-sub text-sm font-bold px-2 py-1">✕</button>
+      </div>
+      <input id="addSavingsAmountInput" type="number" step="any" min="0.01" required placeholder="Amount to save" class="w-full px-3.5 py-2.5 rounded-xl theme-input text-xs font-bold focus:outline-none">
+      <button type="submit" class="w-full py-2.5 rounded-xl accent-bg text-xs font-bold">Transfer to Savings ✨</button>
+    </form>
+  </div>
+
+  <!-- MODAL: EMERGENCY WITHDRAW FROM SAVINGS GOAL -->
+  <div id="withdrawSavingsModal" class="fixed inset-0 bg-black/65 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <form id="withdrawSavingsForm" class="theme-card p-5 w-full max-w-sm space-y-3.5">
+      <div class="flex justify-between items-center">
+        <h3 id="withdrawSavingsTitle" class="text-base font-extrabold font-cute">Withdraw Savings 🩹</h3>
+        <button type="button" data-close-modal="withdrawSavingsModal" class="theme-text-sub text-sm font-bold px-2 py-1">✕</button>
+      </div>
+      <p class="text-[11px] theme-text-sub leading-relaxed">
+        Returns funds to your available cash for emergencies. Your unlocked decorations stay safe forever! 🛡️✨
+      </p>
+      <input id="withdrawSavingsAmountInput" type="number" step="any" min="0.01" required placeholder="Amount to withdraw" class="w-full px-3.5 py-2.5 rounded-xl theme-input text-xs font-bold focus:outline-none">
+      <button type="submit" class="w-full py-2.5 rounded-xl bg-amber-500 text-white text-xs font-bold">Withdraw to Wallet 🐾</button>
+    </form>
+  </div>
+
+  <!-- MODAL: CUSTOMIZE COZY SCENE MILESTONES -->
+  <div id="customizeMilestonesModal" class="fixed inset-0 bg-black/65 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <div class="theme-card p-5 w-full max-w-sm space-y-3.5 max-h-[88vh] flex flex-col">
+      <div class="flex justify-between items-center">
+        <div>
+          <h3 class="text-base font-extrabold font-cute">Cozy Scene Milestones 🪴✨</h3>
+          <p class="text-[11px] theme-text-sub">Customize rewards & target savings amounts</p>
+        </div>
+        <button type="button" data-close-modal="customizeMilestonesModal" class="theme-text-sub text-sm font-bold px-2 py-1">✕</button>
+      </div>
+
+      <form id="milestoneForm" class="theme-muted p-3 rounded-2xl space-y-2.5">
+        <div class="flex items-center gap-2">
+          <div id="selectedMilestoneEmojiBadge" class="w-10 h-10 rounded-xl theme-card flex items-center justify-center text-xl shrink-0">🌱</div>
+          <input id="milestoneNameInput" type="text" required maxlength="22" placeholder="Item name (e.g., Sprout, Mug)" class="flex-1 px-3 py-2 rounded-xl theme-input text-xs font-bold focus:outline-none">
+        </div>
+        <div>
+          <label class="text-[10px] font-bold uppercase theme-text-sub block mb-1">Target Savings Amount</label>
+          <input id="milestoneTargetInput" type="number" step="any" min="1" required placeholder="e.g., 100" class="w-full px-3 py-2 rounded-xl theme-input text-xs font-bold focus:outline-none">
+        </div>
+        <div>
+          <span class="text-[10px] font-bold uppercase theme-text-sub block mb-1">Tap a Decoration Icon</span>
+          <div id="milestoneEmojiGrid" class="grid grid-cols-6 gap-1.5 max-h-28 overflow-y-auto p-1"></div>
+        </div>
+        <div class="flex gap-2">
+          <button id="milestoneSubmitBtn" type="submit" class="flex-1 py-2 rounded-xl accent-bg text-xs font-bold active:scale-95 transition">
+            + Add Milestone 🐾
+          </button>
+          <button id="milestoneCancelEditBtn" type="button" class="hidden px-3 py-2 rounded-xl theme-card text-xs font-bold">
+            Cancel
+          </button>
+        </div>
+      </form>
+
+      <div class="space-y-1.5 overflow-y-auto pr-1 flex-1">
+        <span class="text-[10px] font-bold uppercase theme-text-sub block">Your Scene Milestones</span>
+        <div id="milestonesList" class="space-y-1.5"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: LOG DEBT (I OWE / BORROWED) -->
+  <div id="logDebtModal" class="fixed inset-0 bg-black/65 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <form id="logDebtForm" class="theme-card p-5 w-full max-w-sm space-y-3.5">
+      <div class="flex justify-between items-center">
+        <h3 class="text-base font-extrabold font-cute">Log Money I Borrowed 🤝</h3>
+        <button type="button" data-close-modal="logDebtModal" class="theme-text-sub text-sm font-bold px-2 py-1">✕</button>
+      </div>
+      <input id="debtPersonInput" type="text" required placeholder="Person's name (e.g., R)" class="w-full px-3.5 py-2.5 rounded-xl theme-input text-xs font-semibold focus:outline-none">
+      <input id="debtAmountInput" type="number" step="any" min="0.01" required placeholder="Amount borrowed" class="w-full px-3.5 py-2.5 rounded-xl theme-input text-xs font-bold focus:outline-none">
+      <div class="theme-muted p-3 rounded-2xl space-y-1">
+        <label class="flex items-start gap-2 cursor-pointer">
+          <input id="debtSyncWalletCheck" type="checkbox" checked class="mt-0.5 rounded">
+          <span class="text-xs font-bold leading-snug">Include in my main wallet balance</span>
+        </label>
+        <p class="text-[10px] theme-text-sub pl-5 leading-relaxed">
+          ON: Adds cash to your wallet now so spending it on food & paying back later never double-deducts. OFF: Track only.
+        </p>
+      </div>
+      <button type="submit" class="w-full py-2.5 rounded-xl accent-bg text-xs font-bold">Save Borrowed Record 🤝</button>
+    </form>
+  </div>
+
+  <!-- MODAL: LOG LENT (OWED TO ME) -->
+  <div id="logLentModal" class="fixed inset-0 bg-black/65 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <form id="logLentForm" class="theme-card p-5 w-full max-w-sm space-y-3.5">
+      <div class="flex justify-between items-center">
+        <h3 class="text-base font-extrabold font-cute">Log Money I Lent 💸</h3>
+        <button type="button" data-close-modal="logLentModal" class="theme-text-sub text-sm font-bold px-2 py-1">✕</button>
+      </div>
+      <input id="lentPersonInput" type="text" required placeholder="Person's name" class="w-full px-3.5 py-2.5 rounded-xl theme-input text-xs font-semibold focus:outline-none">
+      <input id="lentAmountInput" type="number" step="any" min="0.01" required placeholder="Amount lent" class="w-full px-3.5 py-2.5 rounded-xl theme-input text-xs font-bold focus:outline-none">
+      <div class="theme-muted p-3 rounded-2xl space-y-1">
+        <label class="flex items-start gap-2 cursor-pointer">
+          <input id="lentSyncWalletCheck" type="checkbox" checked class="mt-0.5 rounded">
+          <span class="text-xs font-bold leading-snug">Include in my main wallet balance</span>
+        </label>
+        <p class="text-[10px] theme-text-sub pl-5 leading-relaxed">
+          ON: Deducts from your wallet now and returns it when marked Paid. OFF: Track only.
+        </p>
+      </div>
+      <button type="submit" class="w-full py-2.5 rounded-xl accent-bg text-xs font-bold">Save Lent Record 💸</button>
+    </form>
+  </div>
+
+  <!-- MODAL: SETTLE OWED / LENT CONFIRMATION -->
+  <div id="settleLoanModal" class="fixed inset-0 bg-black/65 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <div class="theme-card p-5 w-full max-w-sm space-y-4">
+      <div class="flex justify-between items-center">
+        <h3 id="settleLoanTitle" class="text-base font-extrabold font-cute">Settle Balance 🤝</h3>
+        <button type="button" data-close-modal="settleLoanModal" class="theme-text-sub text-sm font-bold px-2 py-1">✕</button>
+      </div>
+      <p id="settleLoanDesc" class="text-xs theme-text-sub leading-relaxed"></p>
+      <div class="theme-muted p-3 rounded-2xl">
+        <label class="flex items-center gap-2 cursor-pointer">
+          <input id="settleAffectWalletCheck" type="checkbox" class="rounded">
+          <span id="settleAffectWalletLabel" class="text-xs font-bold">Update my main wallet balance</span>
+        </label>
+      </div>
+      <div class="grid grid-cols-2 gap-2.5">
+        <button type="button" data-close-modal="settleLoanModal" class="py-2.5 rounded-xl theme-muted text-xs font-bold">Cancel</button>
+        <button id="confirmSettleLoanBtn" type="button" class="py-2.5 rounded-xl bg-emerald-500 text-white text-xs font-bold">Confirm Settled 🎉</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: RESET CONFIRMATION -->
+  <div id="resetModal" class="fixed inset-0 bg-black/65 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <div class="theme-card p-5 w-full max-w-sm space-y-4 text-center">
+      <div class="text-3xl">⚠️</div>
+      <h3 class="text-base font-extrabold font-cute">Reset All Data?</h3>
+      <p class="text-xs theme-text-sub">This will clear your initial cash, widgets, shared spaces, expenses, savings, and owed/lent records.</p>
+      <div class="grid grid-cols-2 gap-2.5">
+        <button type="button" data-close-modal="resetModal" class="py-2.5 rounded-xl theme-muted text-xs font-bold">Cancel</button>
+        <button id="confirmResetBtn" type="button" class="py-2.5 rounded-xl bg-rose-500 text-white text-xs font-bold">Yes, Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: QUOTE LIBRARY -->
+  <div id="quoteLibraryModal" class="fixed inset-0 bg-black/65 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <div class="theme-card p-5 w-full max-w-sm space-y-3.5 max-h-[85vh] flex flex-col">
+      <div class="flex justify-between items-center">
+        <h3 class="text-base font-extrabold font-cute">Quote Library 🐾✨</h3>
+        <button type="button" data-close-modal="quoteLibraryModal" class="theme-text-sub text-sm font-bold px-2 py-1">✕</button>
+      </div>
+
+      <div class="theme-muted p-1 rounded-2xl grid grid-cols-2 gap-1">
+        <button type="button" data-quote-mode="random" class="quote-mode-btn py-1.5 rounded-xl text-[11px] font-bold accent-bg transition">
+          🎲 Random Mode
+        </button>
+        <button type="button" data-quote-mode="favorites" class="quote-mode-btn py-1.5 rounded-xl text-[11px] font-bold theme-text-sub transition">
+          ⭐ Favourites Only
+        </button>
+      </div>
+
+      <form id="quoteForm" class="space-y-2.5 theme-muted p-3 rounded-2xl">
+        <textarea id="quoteInputText" rows="2" required placeholder="Write a cute quote..." class="w-full px-3 py-2 rounded-xl theme-input text-xs font-medium focus:outline-none resize-none"></textarea>
+        <div class="flex gap-2">
+          <select id="quoteMemberSelect" class="flex-1 px-2.5 py-2 rounded-xl theme-input text-xs font-bold focus:outline-none">
+            <option value="Bang Chan 🐺">Bang Chan 🐺</option>
+            <option value="Lee Know 🐰">Lee Know 🐰</option>
+            <option value="Changbin 🐷">Changbin 🐷</option>
+            <option value="Hyunjin 🥟">Hyunjin 🥟</option>
+            <option value="Han 🐿️">Han 🐿️</option>
+            <option value="Felix 🐥">Felix 🐥</option>
+            <option value="Seungmin 🐶">Seungmin 🐶</option>
+            <option value="I.N 🦊">I.N 🦊</option>
+          </select>
+          <button id="quoteSubmitBtn" type="submit" class="px-4 py-2 rounded-xl accent-bg text-xs font-bold active:scale-95 transition">
+            Add
+          </button>
+          <button id="quoteCancelEditBtn" type="button" class="hidden px-3 py-2 rounded-xl theme-card text-xs font-bold">
+            Cancel
+          </button>
+        </div>
+      </form>
+
+      <div id="quoteLibraryList" class="space-y-2 overflow-y-auto pr-1 flex-1"></div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const STORAGE_KEY = 'skz_flow_app_data_v1';
+      const DARK_KEY = 'skz_flow_dark_mode_v1';
+      const now = new Date();
+
+      const mascotOrder = [
+        'wolfchan',
+        'leebit',
+        'dwaekki',
+        'dumpling',
+        'hanquokka',
+        'bbokari',
+        'puppym',
+        'foxiny'
+      ];
+
+      const mascots = {
+        wolfchan: {
+          emoji: '🐺',
+          name: 'Wolf Chan',
+          member: 'Bang Chan',
+          light: {
+            bgMain: '#eef2ff',
+            bgCard: '#ffffff',
+            bgMuted: '#e0e7ff',
+            bgInput: '#eef2ff',
+            border: '#c7d2fe',
+            accent: '#4f46e5',
+            hover: '#4338ca',
+            text: '#4338ca',
+            btnText: '#ffffff',
+            soft: 'rgba(79, 70, 229, 0.13)',
+            glow: 'rgba(79, 70, 229, 0.25)',
+            heroGrad: 'linear-gradient(135deg, #3730a3 0%, #4f46e5 55%, #3b82f6 100%)',
+            quoteGrad: 'linear-gradient(135deg, #e0e7ff 0%, #dbeafe 100%)'
+          },
+          dark: {
+            bgMain: '#090b16',
+            bgCard: '#11162b',
+            bgMuted: '#18203d',
+            bgInput: '#18203d',
+            border: 'rgba(96, 165, 250, 0.34)',
+            accent: '#60a5fa',
+            hover: '#93c5fd',
+            text: '#93c5fd',
+            btnText: '#090d1c',
+            soft: 'rgba(96, 165, 250, 0.16)',
+            glow: 'rgba(96, 165, 250, 0.35)',
+            heroGrad: 'linear-gradient(135deg, #1d4ed8 0%, #2563eb 50%, #38bdf8 100%)',
+            quoteGrad: 'linear-gradient(135deg, rgba(59, 130, 246, 0.18) 0%, rgba(56, 189, 248, 0.10) 100%)'
+          }
+        },
+        leebit: {
+          emoji: '🐰',
+          name: 'Leebit',
+          member: 'Lee Know',
+          light: {
+            bgMain: '#ecfdf5',
+            bgCard: '#ffffff',
+            bgMuted: '#d1fae5',
+            bgInput: '#ecfdf5',
+            border: '#a7f3d0',
+            accent: '#0d9488',
+            hover: '#0f766e',
+            text: '#0f766e',
+            btnText: '#ffffff',
+            soft: 'rgba(13, 148, 136, 0.13)',
+            glow: 'rgba(13, 148, 136, 0.25)',
+            heroGrad: 'linear-gradient(135deg, #059669 0%, #0d9488 55%, #14b8a6 100%)',
+            quoteGrad: 'linear-gradient(135deg, #d1fae5 0%, #ccfbf1 100%)'
+          },
+          dark: {
+            bgMain: '#071210',
+            bgCard: '#0e1f1c',
+            bgMuted: '#142c27',
+            bgInput: '#142c27',
+            border: 'rgba(52, 211, 153, 0.34)',
+            accent: '#34d399',
+            hover: '#6ee7b7',
+            text: '#6ee7b7',
+            btnText: '#051a14',
+            soft: 'rgba(52, 211, 153, 0.16)',
+            glow: 'rgba(52, 211, 153, 0.35)',
+            heroGrad: 'linear-gradient(135deg, #047857 0%, #0d9488 55%, #10b981 100%)',
+            quoteGrad: 'linear-gradient(135deg, rgba(52, 211, 153, 0.18) 0%, rgba(45, 212, 191, 0.10) 100%)'
+          }
+        },
+        dwaekki: {
+          emoji: '🐷',
+          name: 'DWAEKKI',
+          member: 'Changbin',
+          light: {
+            bgMain: '#fdf2f8',
+            bgCard: '#ffffff',
+            bgMuted: '#fce7f3',
+            bgInput: '#fdf2f8',
+            border: '#fbcfe8',
+            accent: '#ec4899',
+            hover: '#db2777',
+            text: '#db2777',
+            btnText: '#ffffff',
+            soft: 'rgba(236, 72, 153, 0.13)',
+            glow: 'rgba(236, 72, 153, 0.25)',
+            heroGrad: 'linear-gradient(135deg, #db2777 0%, #ec4899 55%, #f472b6 100%)',
+            quoteGrad: 'linear-gradient(135deg, #fce7f3 0%, #ffe4e6 100%)'
+          },
+          dark: {
+            bgMain: '#140911',
+            bgCard: '#22101d',
+            bgMuted: '#2f1628',
+            bgInput: '#2f1628',
+            border: 'rgba(244, 114, 182, 0.34)',
+            accent: '#f472b6',
+            hover: '#f9a8d4',
+            text: '#f9a8d4',
+            btnText: '#1f0816',
+            soft: 'rgba(244, 114, 182, 0.16)',
+            glow: 'rgba(244, 114, 182, 0.35)',
+            heroGrad: 'linear-gradient(135deg, #be185d 0%, #db2777 55%, #ec4899 100%)',
+            quoteGrad: 'linear-gradient(135deg, rgba(244, 114, 182, 0.18) 0%, rgba(251, 113, 133, 0.10) 100%)'
+          }
+        },
+        dumpling: {
+          emoji: '🥟',
+          name: 'Dumpling',
+          member: 'Hyunjin',
+          light: {
+            bgMain: '#f5f3ff',
+            bgCard: '#ffffff',
+            bgMuted: '#ede9fe',
+            bgInput: '#f5f3ff',
+            border: '#ddd6fe',
+            accent: '#8b5cf6',
+            hover: '#7c3aed',
+            text: '#7c3aed',
+            btnText: '#ffffff',
+            soft: 'rgba(139, 92, 246, 0.13)',
+            glow: 'rgba(139, 92, 246, 0.25)',
+            heroGrad: 'linear-gradient(135deg, #7c3aed 0%, #8b5cf6 55%, #a855f7 100%)',
+            quoteGrad: 'linear-gradient(135deg, #ede9fe 0%, #f3e8ff 100%)'
+          },
+          dark: {
+            bgMain: '#0e0917',
+            bgCard: '#181126',
+            bgMuted: '#231838',
+            bgInput: '#231838',
+            border: 'rgba(192, 132, 252, 0.34)',
+            accent: '#c084fc',
+            hover: '#d8b4fe',
+            text: '#d8b4fe',
+            btnText: '#160926',
+            soft: 'rgba(192, 132, 252, 0.16)',
+            glow: 'rgba(192, 132, 252, 0.36)',
+            heroGrad: 'linear-gradient(135deg, #6d28d9 0%, #7c3aed 55%, #9333ea 100%)',
+            quoteGrad: 'linear-gradient(135deg, rgba(192, 132, 252, 0.18) 0%, rgba(168, 85, 247, 0.10) 100%)'
+          }
+        },
+        hanquokka: {
+          emoji: '🐿️',
+          name: 'HAN QUOKKA',
+          member: 'Han',
+          light: {
+            bgMain: '#fffbeb',
+            bgCard: '#ffffff',
+            bgMuted: '#fef3c7',
+            bgInput: '#fffbeb',
+            border: '#fde68a',
+            accent: '#d97706',
+            hover: '#b45309',
+            text: '#b45309',
+            btnText: '#ffffff',
+            soft: 'rgba(217, 119, 6, 0.13)',
+            glow: 'rgba(217, 119, 6, 0.25)',
+            heroGrad: 'linear-gradient(135deg, #b45309 0%, #d97706 55%, #f59e0b 100%)',
+            quoteGrad: 'linear-gradient(135deg, #fef3c7 0%, #ffedd5 100%)'
+          },
+          dark: {
+            bgMain: '#130e07',
+            bgCard: '#21180d',
+            bgMuted: '#2e2212',
+            bgInput: '#2e2212',
+            border: 'rgba(251, 191, 36, 0.34)',
+            accent: '#fbbf24',
+            hover: '#fcd34d',
+            text: '#fcd34d',
+            btnText: '#1c1205',
+            soft: 'rgba(251, 191, 36, 0.16)',
+            glow: 'rgba(251, 191, 36, 0.34)',
+            heroGrad: 'linear-gradient(135deg, #b45309 0%, #d97706 55%, #f59e0b 100%)',
+            quoteGrad: 'linear-gradient(135deg, rgba(251, 191, 36, 0.18) 0%, rgba(245, 158, 11, 0.10) 100%)'
+          }
+        },
+        bbokari: {
+          emoji: '🐥',
+          name: 'BbokAri',
+          member: 'Felix',
+          light: {
+            bgMain: '#fefce8',
+            bgCard: '#ffffff',
+            bgMuted: '#fef9c3',
+            bgInput: '#fefce8',
+            border: '#fef08a',
+            accent: '#ca8a04',
+            hover: '#a16207',
+            text: '#a16207',
+            btnText: '#ffffff',
+            soft: 'rgba(202, 138, 4, 0.14)',
+            glow: 'rgba(202, 138, 4, 0.25)',
+            heroGrad: 'linear-gradient(135deg, #ca8a04 0%, #eab308 55%, #f59e0b 100%)',
+            quoteGrad: 'linear-gradient(135deg, #fef9c3 0%, #fef3c7 100%)'
+          },
+          dark: {
+            bgMain: '#121107',
+            bgCard: '#1f1d0d',
+            bgMuted: '#2c2912',
+            bgInput: '#2c2912',
+            border: 'rgba(253, 224, 71, 0.34)',
+            accent: '#fde047',
+            hover: '#fef08a',
+            text: '#fef08a',
+            btnText: '#1a1804',
+            soft: 'rgba(253, 224, 71, 0.15)',
+            glow: 'rgba(253, 224, 71, 0.34)',
+            heroGrad: 'linear-gradient(135deg, #a16207 0%, #ca8a04 55%, #eab308 100%)',
+            quoteGrad: 'linear-gradient(135deg, rgba(253, 224, 71, 0.16) 0%, rgba(250, 204, 21, 0.09) 100%)'
+          }
+        },
+        puppym: {
+          emoji: '🐶',
+          name: 'PuppyM',
+          member: 'Seungmin',
+          light: {
+            bgMain: '#ecfeff',
+            bgCard: '#ffffff',
+            bgMuted: '#cffafe',
+            bgInput: '#ecfeff',
+            border: '#a5f3fc',
+            accent: '#0284c7',
+            hover: '#0369a1',
+            text: '#0369a1',
+            btnText: '#ffffff',
+            soft: 'rgba(2, 132, 199, 0.13)',
+            glow: 'rgba(2, 132, 199, 0.25)',
+            heroGrad: 'linear-gradient(135deg, #0369a1 0%, #0284c7 55%, #06b6d4 100%)',
+            quoteGrad: 'linear-gradient(135deg, #cffafe 0%, #e0f2fe 100%)'
+          },
+          dark: {
+            bgMain: '#061116',
+            bgCard: '#0c1e26',
+            bgMuted: '#122b36',
+            bgInput: '#122b36',
+            border: 'rgba(34, 211, 238, 0.34)',
+            accent: '#22d3ee',
+            hover: '#67e8f9',
+            text: '#67e8f9',
+            btnText: '#05181f',
+            soft: 'rgba(34, 211, 238, 0.16)',
+            glow: 'rgba(34, 211, 238, 0.36)',
+            heroGrad: 'linear-gradient(135deg, #0e7490 0%, #0284c7 55%, #06b6d4 100%)',
+            quoteGrad: 'linear-gradient(135deg, rgba(34, 211, 238, 0.18) 0%, rgba(56, 189, 248, 0.10) 100%)'
+          }
+        },
+        foxiny: {
+          emoji: '🦊',
+          name: 'FoxI.Ny',
+          member: 'I.N',
+          light: {
+            bgMain: '#fff7ed',
+            bgCard: '#ffffff',
+            bgMuted: '#ffedd5',
+            bgInput: '#fff7ed',
+            border: '#fed7aa',
+            accent: '#ea580c',
+            hover: '#c2410c',
+            text: '#c2410c',
+            btnText: '#ffffff',
+            soft: 'rgba(234, 88, 12, 0.13)',
+            glow: 'rgba(234, 88, 12, 0.25)',
+            heroGrad: 'linear-gradient(135deg, #c2410c 0%, #ea580c 55%, #f97316 100%)',
+            quoteGrad: 'linear-gradient(135deg, #ffedd5 0%, #ffe4e6 100%)'
+          },
+          dark: {
+            bgMain: '#140b08',
+            bgCard: '#22130e',
+            bgMuted: '#301b14',
+            bgInput: '#301b14',
+            border: 'rgba(251, 146, 60, 0.34)',
+            accent: '#fb923c',
+            hover: '#fdba74',
+            text: '#fdba74',
+            btnText: '#1f0d06',
+            soft: 'rgba(251, 146, 60, 0.16)',
+            glow: 'rgba(251, 146, 60, 0.35)',
+            heroGrad: 'linear-gradient(135deg, #c2410c 0%, #ea580c 55%, #f97316 100%)',
+            quoteGrad: 'linear-gradient(135deg, rgba(251, 146, 60, 0.18) 0%, rgba(251, 113, 133, 0.10) 100%)'
+          }
+        }
+      };
+
+      const defaultCategories = [
+        { id: 'cat_food', icon: '🍜', label: 'Food / Mess' },
+        { id: 'cat_hall', icon: '🏛️', label: 'Hall / Rent' },
+        { id: 'cat_wifi', icon: '📶', label: 'Wifi Bill' },
+        { id: 'cat_tea', icon: '🧋', label: 'Tea & Snacks' },
+        { id: 'cat_paw', icon: '🐾', label: 'Kitten Paw' },
+        { id: 'cat_books', icon: '📚', label: 'Books' },
+        { id: 'cat_ticket', icon: '🎫', label: 'SKZ Ticket' },
+        { id: 'cat_train', icon: '🚆', label: 'Train / Travel' },
+        { id: 'cat_rickshaw', icon: '🛺', label: 'Rickshaw / Auto' },
+        { id: 'cat_groceries', icon: '🛒', label: 'Groceries' },
+        { id: 'cat_skincare', icon: '💄', label: 'Skincare & Care' },
+        { id: 'cat_clothes', icon: '👗', label: 'Clothes & Shopping' },
+        { id: 'cat_health', icon: '💊', label: 'Medicine / Health' },
+        { id: 'cat_mobile', icon: '📱', label: 'Mobile Recharge' },
+        { id: 'cat_print', icon: '🖨️', label: 'Print & Stationery' },
+        { id: 'cat_merch', icon: '💿', label: 'Albums & Merch' },
+        { id: 'cat_gifts', icon: '🎁', label: 'Gifts & Treats' },
+        { id: 'cat_laundry', icon: '🧺', label: 'Laundry' },
+        { id: 'cat_coffee', icon: '☕', label: 'Coffee & Cafe' },
+        { id: 'cat_entertainment', icon: '🎬', label: 'Entertainment' },
+        { id: 'cat_utilities', icon: '💡', label: 'Utilities' },
+        { id: 'cat_other', icon: '✨', label: 'Other' }
+      ];
+
+      const customIconChoices = [
+        '🐾', '🥟', '🎧', '🍰', '🛍️', '🚌',
+        '🏥', '💅', '🧴', '✏️', '💻', '🎵',
+        '🌸', '🧸', '🍜', '🧋', '💳', '🏠',
+        '🚆', '🛺', '☕', '🎁', '📚', '💊',
+        '💿', '👗', '🛒', '📱', '🎬', '💡',
+        '🧺', '🍔', '🍦', '✈️', '🎨', '✨'
+      ];
+
+      const defaultQuotes = [
+        { id: 'q_1', text: "Let's eat delicious food and stay healthy!", member: 'Hyunjin 🥟', fav: true },
+        { id: 'q_2', text: 'Take it easy, one step at a time.', member: 'Han 🐿️', fav: true },
+        { id: 'q_3', text: 'Make your own path, step by step!', member: 'Bang Chan 🐺', fav: false },
+        { id: 'q_4', text: "You worked hard today, I'm proud of you!", member: 'Felix 🐥', fav: false },
+        { id: 'q_5', text: 'One step at a time is enough.', member: 'Seungmin 🐶', fav: false },
+        { id: 'q_6', text: "Believe in yourself. You're doing great!", member: 'Hyunjin 🥟', fav: false }
+      ];
+
+      const defaultSavingsMilestones = [
+        { id: 'ms_1', icon: '🌱', name: 'Sprout', target: 100 },
+        { id: 'ms_2', icon: '🪴', name: 'Potted Plant', target: 300 },
+        { id: 'ms_3', icon: '☕', name: 'Cozy Mug', target: 500 },
+        { id: 'ms_4', icon: '🎧', name: 'Headphones', target: 1000 }
+      ];
+
+      const milestoneIconChoices = [
+        '🌱', '🪴', '☕', '🎧', '🥟', '🧸',
+        '🕯️', '📚', '💿', '🌸', '🍓', '🧋',
+        '⭐', '🌙', '🎨', '🎮', '🐾', '🏆'
+      ];
+
+      let state = {
+        initialCash: 0,
+        currency: '৳',
+        activeMascot: 'dumpling',
+        sceneMode: 'room', // 'room' or 'forest'
+        widgets: [],
+        expenses: [],
+        savings: [],
+        peakSaved: 0,
+        unlockedMilestoneIds: [],
+        savingsMilestones: JSON.parse(JSON.stringify(defaultSavingsMilestones)),
+        roomPlacements: {},
+        forestPlacements: {},
+        debts: [],
+        lent: [],
+        sharedSpaces: [],
+        customCategories: [],
+        quotes: JSON.parse(JSON.stringify(defaultQuotes)),
+        quoteMode: 'random'
+      };
+
+      let calYear = now.getFullYear();
+      let calMonth = now.getMonth();
+      let activeWidgetId = null;
+      let activeGoalId = null;
+      let activeSharedSpaceId = null;
+      let pendingSettlement = null;
+      let editingQuoteId = null;
+      let currentQuoteIndex = 0;
+      let selectedCustomEmoji = '🐾';
+      let selectedMilestoneEmoji = '🌱';
+      let editingMilestoneId = null;
+      let selectedRoomItemId = null;
+
+      function getGoldenColor(index) {
+        const hue = (index * 137.508) % 360;
+        const sat = 74 + (index % 3) * 6;
+        const light = 54 + (index % 2) * 6;
+        return `hsl(${hue.toFixed(1)}, ${sat}%, ${light}%)`;
+      }
+
+      function escapeHtml(str) {
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function formatMoney(val) {
+        const num = Number(val) || 0;
+        return `${state.currency} ${num.toLocaleString(undefined, { maximumFractionDigits: 2 })}`;
+      }
+
+      function getTodayStr() {
+        const d = new Date();
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return `${y}-${m}-${day}`;
+      }
+
+      function showToast(msg) {
+        const box = document.getElementById('toastBox');
+        document.getElementById('toastMessage').textContent = msg;
+        box.classList.remove('hidden');
+        clearTimeout(window._toastTimer);
+        window._toastTimer = setTimeout(() => {
+          box.classList.add('hidden');
+        }, 2300);
+      }
+
+      function openModal(id) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.classList.remove('hidden');
+        el.classList.add('flex');
+      }
+
+      function closeModal(id) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.classList.add('hidden');
+        el.classList.remove('flex');
+      }
+
+      function saveState() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        } catch (e) {}
+      }
+
+      function normalizeLoanItem(item) {
+        return {
+          id: item.id,
+          person: item.person,
+          original: Number(item.original) || 0,
+          remaining: Number(item.remaining) || 0,
+          walletSynced: item.walletSynced === true,
+          settledWithWallet: item.settledWithWallet === true
+        };
+      }
+
+      function normalizeSharedSpace(sp) {
+        return {
+          id: sp.id,
+          name: sp.name,
+          budget: Math.max(0, Number(sp.budget) || 0),
+          members: Array.isArray(sp.members) ? sp.members : [],
+          bills: Array.isArray(sp.bills) ? sp.bills : []
+        };
+      }
+
+      function normalizeMascotKey(key) {
+        if (key === 'jiniret') return 'dumpling';
+        return mascots[key] ? key : 'dumpling';
+      }
+
+      function normalizeMilestone(ms, idx) {
+        return {
+          id: ms.id || ('ms_' + idx + '_' + Date.now()),
+          icon: ms.icon || '🌱',
+          name: String(ms.name || 'Reward'),
+          target: Math.max(1, Number(ms.target) || 100)
+        };
+      }
+
+      function normalizePlacements(raw) {
+        const out = {};
+        if (raw && typeof raw === 'object') {
+          Object.keys(raw).forEach(k => {
+            const item = raw[k];
+            if (item && typeof item === 'object') {
+              out[k] = {
+                x: Math.min(90, Math.max(10, Number(item.x) || 50)),
+                y: Math.min(88, Math.max(16, Number(item.y) || 72))
+              };
+            }
+          });
+        }
+        return out;
+      }
+
+      function getActivePlacementsMap() {
+        return state.sceneMode === 'forest' ? state.forestPlacements : state.roomPlacements;
+      }
+
+      function syncSavingsUnlocks(notifyNew = false) {
+        const currentTotalSaved = state.savings.reduce((sum, s) => sum + (Number(s.saved) || 0), 0);
+        if (currentTotalSaved > (Number(state.peakSaved) || 0)) {
+          state.peakSaved = currentTotalSaved;
+        }
+        if (!Array.isArray(state.unlockedMilestoneIds)) {
+          state.unlockedMilestoneIds = [];
+        }
+        const newlyUnlocked = [];
+        (state.savingsMilestones || []).forEach(ms => {
+          if (state.peakSaved >= ms.target && !state.unlockedMilestoneIds.includes(ms.id)) {
+            state.unlockedMilestoneIds.push(ms.id);
+            newlyUnlocked.push(ms);
+          }
+        });
+        if (notifyNew && newlyUnlocked.length > 0) {
+          const last = newlyUnlocked[newlyUnlocked.length - 1];
+          launchConfetti();
+          showToast(`Unlocked ${last.icon} ${last.name}! ✨`);
+        }
+      }
+
+      function loadState() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (raw) {
+            const p = JSON.parse(raw);
+            if (p && typeof p === 'object') {
+              const loadedSavings = Array.isArray(p.savings) ? p.savings : [];
+              const currentSavedSum = loadedSavings.reduce((sum, s) => sum + (Number(s.saved) || 0), 0);
+              state = {
+                initialCash: Number(p.initialCash) || 0,
+                currency: p.currency || '৳',
+                activeMascot: normalizeMascotKey(p.activeMascot),
+                sceneMode: p.sceneMode === 'forest' ? 'forest' : 'room',
+                widgets: Array.isArray(p.widgets) ? p.widgets : [],
+                expenses: Array.isArray(p.expenses) ? p.expenses : [],
+                savings: loadedSavings,
+                peakSaved: Math.max(Number(p.peakSaved) || 0, currentSavedSum),
+                unlockedMilestoneIds: Array.isArray(p.unlockedMilestoneIds) ? p.unlockedMilestoneIds : [],
+                savingsMilestones: Array.isArray(p.savingsMilestones) && p.savingsMilestones.length > 0
+                  ? p.savingsMilestones.map(normalizeMilestone)
+                  : JSON.parse(JSON.stringify(defaultSavingsMilestones)),
+                roomPlacements: normalizePlacements(p.roomPlacements),
+                forestPlacements: normalizePlacements(p.forestPlacements),
+                debts: Array.isArray(p.debts) ? p.debts.map(normalizeLoanItem) : [],
+                lent: Array.isArray(p.lent) ? p.lent.map(normalizeLoanItem) : [],
+                sharedSpaces: Array.isArray(p.sharedSpaces) ? p.sharedSpaces.map(normalizeSharedSpace) : [],
+                customCategories: Array.isArray(p.customCategories) ? p.customCategories : [],
+                quotes: Array.isArray(p.quotes) && p.quotes.length > 0 ? p.quotes : JSON.parse(JSON.stringify(defaultQuotes)),
+                quoteMode: p.quoteMode === 'favorites' ? 'favorites' : 'random'
+              };
+              syncSavingsUnlocks(false);
+            }
+          }
+        } catch (e) {}
+      }
+
+      // --- FULL THEME ENGINE ---
+      function applyFullTheme() {
+        const isDark = document.body.classList.contains('dark-mode');
+        const m = mascots[state.activeMascot] || mascots.dumpling;
+        const pal = isDark ? m.dark : m.light;
+        const root = document.documentElement.style;
+
+        root.setProperty('--bg-main', pal.bgMain);
+        root.setProperty('--bg-card', pal.bgCard);
+        root.setProperty('--bg-muted', pal.bgMuted);
+        root.setProperty('--bg-input', pal.bgInput);
+        root.setProperty('--border-color', pal.border);
+        root.setProperty('--accent', pal.accent);
+        root.setProperty('--accent-hover', pal.hover);
+        root.setProperty('--accent-text', pal.text);
+        root.setProperty('--accent-btn-text', pal.btnText);
+        root.setProperty('--accent-soft', pal.soft);
+        root.setProperty('--accent-glow', pal.glow);
+        root.setProperty('--hero-grad', pal.heroGrad);
+        root.setProperty('--quote-grad', pal.quoteGrad);
+
+        if (isDark) {
+          root.setProperty('--card-shadow', `0 10px 28px -6px rgba(0, 0, 0, 0.72), 0 0 18px -6px ${pal.glow}`);
+        } else {
+          root.setProperty('--card-shadow', `0 8px 24px -6px rgba(30, 27, 46, 0.08), 0 2px 6px -2px rgba(30, 27, 46, 0.04)`);
+        }
+      }
+
+      // --- CONFETTI ---
+      function launchConfetti() {
+        const canvas = document.getElementById('confettiCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const pieces = Array.from({ length: 70 }, (_, idx) => ({
+          x: Math.random() * canvas.width,
+          y: -20 - Math.random() * 100,
+          r: 4 + Math.random() * 5,
+          c: getGoldenColor(idx),
+          vx: (Math.random() - 0.5) * 4,
+          vy: 3 + Math.random() * 4
+        }));
+        let frame = 0;
+        function tick() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          pieces.forEach(p => {
+            p.x += p.vx;
+            p.y += p.vy;
+            ctx.fillStyle = p.c;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fill();
+          });
+          frame++;
+          if (frame < 90) requestAnimationFrame(tick);
+          else ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+        tick();
+      }
+
+      // --- DARK MODE ---
+      function applyDarkMode(isDark) {
+        document.body.classList.toggle('dark-mode', isDark);
+        document.getElementById('darkModeIcon').textContent = isDark ? '☀️' : '🌙';
+        applyFullTheme();
+        try {
+          localStorage.setItem(DARK_KEY, isDark ? '1' : '0');
+        } catch (e) {}
+      }
+
+      // --- CATEGORIES & CUSTOM ICON PICKER ---
+      function getAllCategories() {
+        return [...defaultCategories, ...state.customCategories];
+      }
+
+      function renderCategoryDropdown(selectCatId = null) {
+        const select = document.getElementById('widgetCategorySelect');
+        if (!select) return;
+        const all = getAllCategories();
+        select.innerHTML = all.map(c => `
+          <option value="${escapeHtml(c.id)}">${c.icon} ${escapeHtml(c.label)}</option>
+        `).join('');
+        if (selectCatId && all.some(c => c.id === selectCatId)) {
+          select.value = selectCatId;
+        }
+      }
+
+      function renderCustomCategoryModal() {
+        document.getElementById('selectedCustomEmojiBadge').textContent = selectedCustomEmoji;
+        const grid = document.getElementById('emojiPickerGrid');
+        grid.innerHTML = customIconChoices.map(em => `
+          <button type="button" data-pick-emoji="${em}" class="h-9 rounded-xl theme-card flex items-center justify-center text-lg active:scale-95 transition ${selectedCustomEmoji === em ? 'accent-ring' : ''}">
+            ${em}
+          </button>
+        `).join('');
+
+        const list = document.getElementById('customCategoriesList');
+        if (state.customCategories.length === 0) {
+          list.innerHTML = `<p class="text-[11px] theme-text-sub text-center py-3">No custom categories yet. Create one above! ✨</p>`;
+        } else {
+          list.innerHTML = state.customCategories.map(c => `
+            <div class="theme-muted px-3 py-2 rounded-xl flex items-center justify-between gap-2">
+              <span class="text-xs font-bold truncate">${c.icon} ${escapeHtml(c.label)}</span>
+              <button type="button" data-delete-custom-cat="${c.id}" class="text-xs text-rose-500 font-bold px-1.5 py-0.5">🗑️</button>
+            </div>
+          `).join('');
+        }
+      }
+
+      // --- QUOTES ---
+      function getQuotePool() {
+        if (state.quoteMode === 'favorites') {
+          const favs = state.quotes.filter(q => q.fav);
+          if (favs.length > 0) return favs;
+        }
+        return state.quotes;
+      }
+
+      function showNextQuote(pickRandom = true) {
+        const pool = getQuotePool();
+        if (pool.length === 0) {
+          document.getElementById('quoteText').textContent = 'Add your own quotes in the Quote Library! 🐾';
+          return;
+        }
+        if (pickRandom) {
+          currentQuoteIndex = Math.floor(Math.random() * pool.length);
+        } else {
+          currentQuoteIndex = currentQuoteIndex % pool.length;
+        }
+        const q = pool[currentQuoteIndex];
+        document.getElementById('quoteText').textContent = `"${q.text}" — ${q.member}`;
+      }
+
+      function renderQuoteLibrary() {
+        document.querySelectorAll('.quote-mode-btn').forEach(btn => {
+          const isSelected = btn.getAttribute('data-quote-mode') === state.quoteMode;
+          btn.classList.toggle('accent-bg', isSelected);
+          btn.classList.toggle('theme-text-sub', !isSelected);
+        });
+
+        const list = document.getElementById('quoteLibraryList');
+        if (state.quotes.length === 0) {
+          list.innerHTML = `<p class="text-xs theme-text-sub text-center py-4">No quotes yet! Add one above 🐾</p>`;
+          return;
+        }
+
+        list.innerHTML = state.quotes.map(q => `
+          <div class="theme-muted p-3 rounded-2xl space-y-1.5">
+            <p class="text-xs italic font-medium leading-snug">"${escapeHtml(q.text)}"</p>
+            <div class="flex items-center justify-between pt-1">
+              <span class="text-[11px] font-bold accent-text">— ${escapeHtml(q.member)}</span>
+              <div class="flex items-center gap-1.5">
+                <button type="button" data-fav-quote="${q.id}" class="text-sm px-1.5 py-0.5 rounded-lg hover:opacity-80 transition" title="Toggle Favourite">
+                  ${q.fav ? '⭐' : '☆'}
+                </button>
+                <button type="button" data-edit-quote="${q.id}" class="text-xs px-1.5 py-0.5 rounded-lg hover:opacity-80 transition" title="Edit">
+                  ✏️
+                </button>
+                <button type="button" data-delete-quote="${q.id}" class="text-xs px-1.5 py-0.5 rounded-lg hover:opacity-80 transition" title="Delete">
+                  🗑️
+                </button>
+              </div>
+            </div>
+          </div>`).join('');
+      }
+
+      // --- RENDER HEADER & BALANCE ---
+      function renderHeaderAndBalance() {
+        applyFullTheme();
+        const m = mascots[state.activeMascot] || mascots.dumpling;
+        document.getElementById('headerMascotEmoji').textContent = m.emoji;
+        document.getElementById('quoteMascotEmoji').textContent = m.emoji;
+        document.getElementById('headerMascotSub').textContent = `${m.name} • ${m.member}`;
+        document.getElementById('headerCurrencyBadge').textContent = `${state.currency} ✏️`;
+
+        const totalSpent = state.expenses.reduce((sum, e) => sum + (Number(e.amount) || 0), 0);
+        const totalSaved = state.savings.reduce((sum, s) => sum + (Number(s.saved) || 0), 0);
+        const totalOwed = state.debts.reduce((sum, d) => sum + (Number(d.remaining) || 0), 0);
+
+        const borrowedWalletDelta = state.debts.reduce((sum, d) => {
+          let delta = 0;
+          if (d.walletSynced) delta += (Number(d.original) || 0);
+          if (d.remaining === 0 && d.settledWithWallet) delta -= (Number(d.original) || 0);
+          return sum + delta;
+        }, 0);
+
+        const lentWalletDelta = state.lent.reduce((sum, l) => {
+          let delta = 0;
+          if (l.walletSynced) delta -= (Number(l.original) || 0);
+          if (l.remaining === 0 && l.settledWithWallet) delta += (Number(l.original) || 0);
+          return sum + delta;
+        }, 0);
+
+        const availableCash = state.initialCash - totalSpent - totalSaved + borrowedWalletDelta + lentWalletDelta;
+
+        document.getElementById('displayAvailableCash').textContent = formatMoney(availableCash);
+        document.getElementById('displayInitialCash').textContent = formatMoney(state.initialCash);
+        document.getElementById('displayTotalSpent').textContent = totalSpent > 0 ? `-${formatMoney(totalSpent)}` : formatMoney(0);
+        document.getElementById('displayTotalSaved').textContent = formatMoney(totalSaved);
+        document.getElementById('displayTotalOwed').textContent = formatMoney(totalOwed);
+      }
+
+      // --- RENDER EXPENSES WIDGETS ---
+      function renderWidgets() {
+        const container = document.getElementById('widgetsContainer');
+        document.getElementById('widgetCountBadge').textContent = state.widgets.length;
+
+        if (state.widgets.length === 0) {
+          container.innerHTML = `
+            <div class="theme-card p-6 text-center space-y-2">
+              <div class="text-3xl">🐱</div>
+              <p class="text-xs font-bold theme-text-sub">No expense widgets yet!</p>
+              <p class="text-[11px] theme-text-sub">Tap "+ New Cute Widget 🐾" to start tracking.</p>
+            </div>`;
+          return;
+        }
+
+        container.innerHTML = state.widgets.map(w => {
+          const widgetExpenses = state.expenses.filter(e => e.widgetId === w.id);
+          const spent = widgetExpenses.reduce((sum, e) => sum + (Number(e.amount) || 0), 0);
+          const pct = w.target > 0 ? Math.min(100, Math.round((spent / w.target) * 100)) : 0;
+          return `
+            <div class="theme-card p-4 space-y-3">
+              <div class="flex items-start justify-between gap-2">
+                <div class="flex items-center gap-3 min-w-0">
+                  <div class="w-11 h-11 rounded-2xl theme-muted flex items-center justify-center text-2xl shrink-0">${w.icon}</div>
+                  <div class="min-w-0">
+                    <h3 class="text-sm font-extrabold truncate">${escapeHtml(w.title)}</h3>
+                    <p class="text-[11px] font-bold accent-text">Target: ${formatMoney(w.target)}</p>
+                  </div>
+                </div>
+                <button type="button" data-delete-widget="${w.id}" class="text-xs theme-text-sub hover:text-rose-500 px-2 py-1" title="Delete Widget">🗑️</button>
+              </div>
+
+              <div class="w-full h-2 rounded-full theme-muted overflow-hidden">
+                <div class="h-full accent-bg rounded-full transition-all" style="width: ${pct}%"></div>
+              </div>
+
+              <div class="flex items-center justify-between text-xs">
+                <span class="theme-text-sub font-semibold">Deducted Cash:</span>
+                <span class="font-extrabold text-rose-500">${spent > 0 ? '-' + formatMoney(spent) : formatMoney(0)}</span>
+              </div>
+
+              <div class="grid grid-cols-2 gap-2">
+                <button type="button" data-view-notes="${w.id}" class="py-2 px-3 rounded-xl accent-soft-bg text-xs font-bold active:scale-95 transition">
+                  🧾 Item Notes (${widgetExpenses.length})
+                </button>
+                <button type="button" data-add-expense="${w.id}" class="py-2 px-3 rounded-xl accent-bg text-xs font-bold active:scale-95 transition">
+                  + Add Expense
+                </button>
+              </div>
+            </div>`;
+        }).join('');
+      }
+
+      // --- RENDER SHARED SPACES ---
+      function computeSpaceStats(space) {
+        const members = ['Me', ...(space.members || [])];
+        const budget = Math.max(0, Number(space.budget) || 0);
+        const allBillsTotal = (space.bills || []).reduce((sum, b) => sum + (Number(b.amount) || 0), 0);
+        const remainingBudget = budget - allBillsTotal;
+
+        let totalUnsettled = 0;
+        let myTotalShare = 0;
+        let whatIPaid = 0;
+        const personNet = {};
+        (space.members || []).forEach(m => { personNet[m] = 0; });
+
+        (space.bills || []).forEach(b => {
+          if (b.settled) return;
+          const amt = Number(b.amount) || 0;
+          const myShare = Number(b.myShare) || 0;
+          totalUnsettled += amt;
+          myTotalShare += myShare;
+          if (b.paidBy === 'Me') whatIPaid += amt;
+
+          const others = space.members || [];
+          const othersCount = others.length;
+          if (othersCount > 0) {
+            const remainingAfterMe = Math.max(0, amt - myShare);
+            const eachOtherShare = remainingAfterMe / othersCount;
+
+            if (b.paidBy === 'Me') {
+              others.forEach(m => {
+                personNet[m] = (personNet[m] || 0) + eachOtherShare;
+              });
+            } else if (Object.prototype.hasOwnProperty.call(personNet, b.paidBy)) {
+              personNet[b.paidBy] = (personNet[b.paidBy] || 0) - myShare;
+            }
+          }
+        });
+
+        return {
+          members,
+          budget,
+          allBillsTotal,
+          remainingBudget,
+          totalUnsettled,
+          myTotalShare,
+          whatIPaid,
+          personNet
+        };
+      }
+
+      function renderSharedSpaces() {
+        const container = document.getElementById('sharedSpacesContainer');
+        if (state.sharedSpaces.length === 0) {
+          container.innerHTML = `
+            <div class="theme-card p-6 text-center space-y-2">
+              <div class="text-3xl">🏘️</div>
+              <p class="text-xs font-bold theme-text-sub">No shared spaces yet!</p>
+              <p class="text-[11px] theme-text-sub">Create a group like "Food" with a 2,000 budget to track shared bills separately.</p>
+            </div>`;
+          return;
+        }
+
+        container.innerHTML = state.sharedSpaces.map(sp => {
+          const stats = computeSpaceStats(sp);
+          const totalBillsCount = (sp.bills || []).length;
+          const hasBudget = stats.budget > 0;
+          const usedPct = hasBudget ? Math.min(100, Math.round((stats.allBillsTotal / stats.budget) * 100)) : 0;
+          const isOverBudget = hasBudget && stats.remainingBudget < 0;
+
+          const personBadges = Object.entries(stats.personNet).map(([person, net]) => {
+            if (Math.abs(net) < 0.01) {
+              return `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full theme-muted theme-text-sub">${escapeHtml(person)}: Settled ✨</span>`;
+            }
+            if (net > 0) {
+              return `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400">${escapeHtml(person)} owes you ${formatMoney(net)}</span>`;
+            }
+            return `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-500/15 text-rose-400">You owe ${escapeHtml(person)} ${formatMoney(Math.abs(net))}</span>`;
+          }).join('');
+
+          const budgetBoxHtml = hasBudget ? `
+            <div class="theme-muted p-3 rounded-2xl space-y-2">
+              <div class="flex items-center justify-between gap-2 text-xs">
+                <span class="font-bold theme-text-sub truncate">Initial Budget: <strong class="accent-text">${formatMoney(stats.budget)}</strong></span>
+                <div class="flex items-center gap-1.5 shrink-0">
+                  <button type="button" data-topup-space-budget="${sp.id}" class="text-[10px] font-extrabold px-2 py-0.5 rounded-lg accent-soft-bg active:scale-95 transition">
+                    + Top Up
+                  </button>
+                  <button type="button" data-edit-space-budget="${sp.id}" class="text-[10px] font-extrabold accent-text hover:underline px-1">
+                    ✏️ Edit
+                  </button>
+                </div>
+              </div>
+              <div class="w-full h-2 rounded-full theme-card overflow-hidden">
+                <div class="h-full rounded-full transition-all ${isOverBudget ? 'bg-rose-500' : 'accent-bg'}" style="width: ${usedPct}%"></div>
+              </div>
+              <div class="flex items-center justify-between text-[11px] font-bold">
+                <span class="theme-text-sub">Spent: <span class="text-rose-500">-${formatMoney(stats.allBillsTotal)}</span></span>
+                <span class="${isOverBudget ? 'text-rose-500' : 'text-emerald-500'}">
+                  ${isOverBudget ? 'Over by ' + formatMoney(Math.abs(stats.remainingBudget)) : 'Left: ' + formatMoney(stats.remainingBudget)}
+                </span>
+              </div>
+            </div>
+          ` : `
+            <div class="theme-muted px-3 py-2 rounded-2xl flex items-center justify-between gap-2">
+              <span class="text-[11px] theme-text-sub font-semibold truncate">No initial budget set for this pool</span>
+              <div class="flex items-center gap-1.5 shrink-0">
+                <button type="button" data-topup-space-budget="${sp.id}" class="text-[10px] font-extrabold px-2 py-0.5 rounded-lg accent-soft-bg active:scale-95 transition">
+                  + Top Up
+                </button>
+                <button type="button" data-edit-space-budget="${sp.id}" class="text-[11px] font-extrabold accent-text hover:underline">
+                  + Set Budget
+                </button>
+              </div>
+            </div>
+          `;
+
+          return `
+            <div class="theme-card p-4 space-y-3">
+              <div class="flex items-start justify-between gap-2">
+                <div>
+                  <h3 class="text-sm font-extrabold">${escapeHtml(sp.name)}</h3>
+                  <p class="text-[11px] theme-text-sub font-semibold">Members: Me, ${(sp.members || []).map(escapeHtml).join(', ')}</p>
+                </div>
+                <button type="button" data-delete-space="${sp.id}" class="text-xs theme-text-sub hover:text-rose-500 px-2 py-1" title="Delete Space">🗑️</button>
+              </div>
+
+              ${budgetBoxHtml}
+
+              <div class="grid grid-cols-3 gap-1.5 text-center">
+                <div class="theme-muted rounded-xl p-2">
+                  <span class="text-[9px] uppercase font-bold theme-text-sub block">Total Spend</span>
+                  <span class="text-xs font-extrabold">${formatMoney(stats.allBillsTotal)}</span>
+                </div>
+                <div class="theme-muted rounded-xl p-2">
+                  <span class="text-[9px] uppercase font-bold theme-text-sub block">My Share</span>
+                  <span class="text-xs font-extrabold accent-text">${formatMoney(stats.myTotalShare)}</span>
+                </div>
+                <div class="theme-muted rounded-xl p-2">
+                  <span class="text-[9px] uppercase font-bold theme-text-sub block">I Paid</span>
+                  <span class="text-xs font-extrabold text-emerald-500">${formatMoney(stats.whatIPaid)}</span>
+                </div>
+              </div>
+
+              <div class="flex flex-wrap gap-1.5">${personBadges}</div>
+
+              <div class="grid grid-cols-2 gap-2">
+                <button type="button" data-view-space="${sp.id}" class="py-2 px-3 rounded-xl accent-soft-bg text-xs font-bold active:scale-95 transition">
+                  🧾 Bills (${totalBillsCount})
+                </button>
+                <button type="button" data-add-bill="${sp.id}" class="py-2 px-3 rounded-xl accent-bg text-xs font-bold active:scale-95 transition">
+                  + Add Shared Bill
+                </button>
+              </div>
+            </div>`;
+        }).join('');
+      }
+
+      // --- RENDER CALENDAR ---
+      function renderCalendar() {
+        const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        document.getElementById('calendarMonthLabel').textContent = `${monthNames[calMonth]} ${calYear}`;
+
+        const firstDay = new Date(calYear, calMonth, 1).getDay();
+        const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+        const grid = document.getElementById('calendarGrid');
+
+        let html = '';
+        for (let i = 0; i < firstDay; i++) {
+          html += `<div></div>`;
+        }
+
+        const todayStr = getTodayStr();
+        for (let d = 1; d <= daysInMonth; d++) {
+          const dateStr = `${calYear}-${String(calMonth + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+          const dayTotal = state.expenses
+            .filter(e => e.date === dateStr)
+            .reduce((sum, e) => sum + (Number(e.amount) || 0), 0);
+          const isToday = dateStr === todayStr;
+
+          html += `
+            <button type="button" data-cal-date="${dateStr}" class="p-1.5 rounded-xl theme-muted flex flex-col items-center justify-between min-h-[52px] ${isToday ? 'accent-ring' : ''} active:scale-95 transition">
+              <span class="text-[11px] font-bold">${d}</span>
+              ${dayTotal > 0 ? `<span class="text-[9px] font-extrabold text-rose-500 truncate max-w-full">-${dayTotal}</span>` : `<span class="text-[9px] opacity-0">0</span>`}
+            </button>`;
+        }
+        grid.innerHTML = html;
+      }
+
+      // --- RENDER COZY SCENE (ROOM <-> FOREST) & SAVINGS GOALS ---
+      function renderCozyShelf() {
+        syncSavingsUnlocks(false);
+        const isForest = state.sceneMode === 'forest';
+        const titleEl = document.getElementById('cozySceneTitle');
+        const toggleBtn = document.getElementById('toggleSceneModeBtn');
+        const roomBackdrop = document.getElementById('sunlitRoomBackdrop');
+        const forestBackdrop = document.getElementById('cozyForestBackdrop');
+        const subEl = document.getElementById('cozyShelfSub');
+        const gridEl = document.getElementById('cozyShelfGrid');
+        const placedLayer = document.getElementById('cozyRoomPlacedLayer');
+        const hintEl = document.getElementById('cozyRoomHint');
+        const actionBar = document.getElementById('cozyRoomActionBar');
+        const selectedLabel = document.getElementById('cozyRoomSelectedLabel');
+        if (!subEl || !gridEl) return;
+
+        if (titleEl) {
+          titleEl.innerHTML = isForest
+            ? `<span>Cozy Forest 🌲✨</span>`
+            : `<span>Sunlit Room 🪟✨</span>`;
+        }
+        if (toggleBtn) {
+          toggleBtn.textContent = isForest ? '🪟 Room' : '🌲 Forest';
+        }
+        if (roomBackdrop) roomBackdrop.classList.toggle('hidden', isForest);
+        if (forestBackdrop) forestBackdrop.classList.toggle('hidden', !isForest);
+
+        subEl.innerHTML = `Peak Saved: <strong class="accent-text">${formatMoney(state.peakSaved)}</strong> • Unlocks stay forever!`;
+
+        const placements = getActivePlacementsMap();
+        const sorted = [...(state.savingsMilestones || [])].sort((a, b) => a.target - b.target);
+        if (placedLayer) {
+          placedLayer.innerHTML = sorted.map(ms => {
+            const unlocked = state.unlockedMilestoneIds.includes(ms.id) || state.peakSaved >= ms.target;
+            const pos = placements[ms.id];
+            if (!unlocked || !pos) return '';
+            const isSelected = selectedRoomItemId === ms.id;
+            return `
+              <button type="button" data-room-placed="${ms.id}" style="left: ${pos.x}%; top: ${pos.y}%;" class="absolute -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center text-2xl transition-transform active:scale-95 ${isSelected ? 'accent-ring bg-white/80 dark:bg-black/60 scale-110' : 'hover:scale-105'}" title="${escapeHtml(ms.name)}">
+                ${ms.icon}
+              </button>`;
+          }).join('');
+        }
+
+        const selectedMs = sorted.find(m => m.id === selectedRoomItemId);
+        if (selectedMs) {
+          const isPlaced = Boolean(placements[selectedMs.id]);
+          if (hintEl) hintEl.textContent = `Tap anywhere to place ${selectedMs.icon} ${selectedMs.name}`;
+          if (actionBar && selectedLabel) {
+            actionBar.classList.remove('hidden');
+            selectedLabel.textContent = `Selected: ${selectedMs.icon} ${selectedMs.name}`;
+            document.getElementById('storeRoomItemBtn').classList.toggle('hidden', !isPlaced);
+          }
+        } else {
+          if (hintEl) hintEl.textContent = 'Tap an unlocked item below to place it ✨';
+          if (actionBar) actionBar.classList.add('hidden');
+        }
+
+        if (sorted.length === 0) {
+          gridEl.innerHTML = `<p class="col-span-4 text-[11px] theme-text-sub text-center py-2">No milestones yet. Tap "✏️ Milestones" to add rewards!</p>`;
+          return;
+        }
+
+        gridEl.innerHTML = sorted.map(ms => {
+          const unlocked = state.unlockedMilestoneIds.includes(ms.id) || state.peakSaved >= ms.target;
+          const isPlaced = Boolean(placements[ms.id]);
+          const isSelected = selectedRoomItemId === ms.id;
+          return `
+            <button type="button" ${unlocked ? `data-tray-item="${ms.id}"` : 'disabled'} class="rounded-2xl p-2 text-center flex flex-col items-center justify-between gap-0.5 transition ${unlocked ? (isSelected ? 'accent-bg accent-ring' : 'accent-soft-bg active:scale-95') : 'theme-muted opacity-60 cursor-not-allowed'}">
+              <span class="text-xl ${unlocked ? '' : 'grayscale opacity-50'}">${unlocked ? ms.icon : '🔒'}</span>
+              <span class="text-[10px] font-extrabold truncate w-full">${escapeHtml(ms.name)}</span>
+              <span class="text-[9px] font-bold ${unlocked ? (isSelected ? 'text-white' : 'accent-text') : 'theme-text-sub'}">
+                ${unlocked ? (isPlaced ? 'Placed ✓' : 'Tap to Place') : formatMoney(ms.target)}
+              </span>
+            </button>`;
+        }).join('');
+      }
+
+      function renderCustomizeMilestonesModal() {
+        document.getElementById('selectedMilestoneEmojiBadge').textContent = selectedMilestoneEmoji;
+        const grid = document.getElementById('milestoneEmojiGrid');
+        grid.innerHTML = milestoneIconChoices.map(em => `
+          <button type="button" data-pick-ms-emoji="${em}" class="h-8 rounded-xl theme-card flex items-center justify-center text-base active:scale-95 transition ${selectedMilestoneEmoji === em ? 'accent-ring' : ''}">
+            ${em}
+          </button>
+        `).join('');
+
+        const list = document.getElementById('milestonesList');
+        const sorted = [...(state.savingsMilestones || [])].sort((a, b) => a.target - b.target);
+        if (sorted.length === 0) {
+          list.innerHTML = `<p class="text-[11px] theme-text-sub text-center py-3">No milestones yet. Create one above! 🌱</p>`;
+          return;
+        }
+        list.innerHTML = sorted.map(ms => {
+          const unlocked = state.unlockedMilestoneIds.includes(ms.id) || state.peakSaved >= ms.target;
+          return `
+            <div class="theme-muted px-3 py-2 rounded-xl flex items-center justify-between gap-2">
+              <div class="min-w-0">
+                <span class="text-xs font-bold block truncate">${ms.icon} ${escapeHtml(ms.name)}</span>
+                <span class="text-[10px] font-semibold ${unlocked ? 'text-emerald-500' : 'theme-text-sub'}">
+                  Target: ${formatMoney(ms.target)} ${unlocked ? '• Unlocked ✨' : ''}
+                </span>
+              </div>
+              <div class="flex items-center gap-1 shrink-0">
+                <button type="button" data-edit-milestone="${ms.id}" class="text-xs px-1.5 py-0.5">✏️</button>
+                <button type="button" data-delete-milestone="${ms.id}" class="text-xs text-rose-500 font-bold px-1.5 py-0.5">🗑️</button>
+              </div>
+            </div>`;
+        }).join('');
+      }
+
+      function renderSavings() {
+        renderCozyShelf();
+        const container = document.getElementById('savingsContainer');
+        if (state.savings.length === 0) {
+          container.innerHTML = `
+            <div class="theme-card p-6 text-center space-y-2.5">
+              <div class="text-4xl">🐷</div>
+              <p class="text-xs font-bold theme-text-sub">No savings goals yet!</p>
+              <button type="button" id="emptyStartGoalBtn" class="text-xs font-extrabold accent-text">+ Start Goal</button>
+            </div>`;
+          const emptyBtn = document.getElementById('emptyStartGoalBtn');
+          if (emptyBtn) {
+            emptyBtn.addEventListener('click', () => openModal('newGoalModal'));
+          }
+          return;
+        }
+
+        container.innerHTML = state.savings.map(g => {
+          const pct = g.target > 0 ? Math.min(100, Math.round((g.saved / g.target) * 100)) : 0;
+          return `
+            <div class="theme-card p-4 space-y-3">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h3 class="text-sm font-extrabold">${escapeHtml(g.title)}</h3>
+                  <p class="text-[11px] theme-text-sub font-semibold">${formatMoney(g.saved)} / ${formatMoney(g.target)} (${pct}%)</p>
+                </div>
+                <button type="button" data-delete-goal="${g.id}" class="text-xs theme-text-sub hover:text-rose-500 px-2 py-1">🗑️</button>
+              </div>
+              <div class="w-full h-2.5 rounded-full theme-muted overflow-hidden">
+                <div class="h-full accent-bg rounded-full transition-all" style="width: ${pct}%"></div>
+              </div>
+              <div class="grid ${g.saved > 0 ? 'grid-cols-3' : 'grid-cols-1'} gap-2">
+                <button type="button" data-add-savings="${g.id}" class="${g.saved > 0 ? 'col-span-2' : ''} py-2 rounded-xl accent-bg text-xs font-bold active:scale-95 transition">
+                  + Transfer to Savings
+                </button>
+                ${g.saved > 0 ? `
+                  <button type="button" data-withdraw-savings="${g.id}" class="py-2 rounded-xl theme-muted text-xs font-bold text-amber-500 active:scale-95 transition" title="Emergency Withdraw">
+                    - Withdraw
+                  </button>
+                ` : ''}
+              </div>
+            </div>`;
+        }).join('');
+      }
+
+      // --- RENDER OWED & LENT ---
+      function renderOwedAndLent() {
+        const debtsList = document.getElementById('debtsList');
+        if (state.debts.length === 0) {
+          debtsList.innerHTML = `<div class="theme-card p-5 text-center text-xs theme-text-sub font-semibold">No borrowed money logged 🤝</div>`;
+        } else {
+          debtsList.innerHTML = state.debts.map(d => `
+            <div class="theme-card p-4 space-y-2.5">
+              <div class="flex items-start justify-between gap-2">
+                <div>
+                  <div class="flex items-center gap-1.5 flex-wrap">
+                    <h3 class="text-sm font-extrabold">${escapeHtml(d.person)}</h3>
+                    <span class="text-[9px] font-bold px-2 py-0.5 rounded-full ${d.walletSynced ? 'accent-soft-bg' : 'theme-muted theme-text-sub'}">
+                      ${d.walletSynced ? '💰 Wallet Synced' : '📝 Track Only'}
+                    </span>
+                  </div>
+                  <p class="text-[11px] theme-text-sub">Original: ${formatMoney(d.original)}</p>
+                </div>
+                <button type="button" data-delete-debt="${d.id}" class="text-xs theme-text-sub hover:text-rose-500 px-2 py-1">🗑️</button>
+              </div>
+              <div class="flex items-center justify-between pt-1">
+                <div>
+                  <span class="text-[10px] uppercase font-bold theme-text-sub block">Remaining Debt</span>
+                  <span class="text-sm font-extrabold ${d.remaining > 0 ? 'accent-text' : 'text-emerald-500'}">${formatMoney(d.remaining)}</span>
+                </div>
+                ${d.remaining > 0 ? `<button type="button" data-pay-debt="${d.id}" class="px-3.5 py-2 rounded-xl bg-emerald-500 text-white text-xs font-bold active:scale-95 transition">Paid / Settled</button>` : `<span class="text-xs font-bold text-emerald-500">Paid! 🎉</span>`}
+              </div>
+            </div>`).join('');
+        }
+
+        const lentList = document.getElementById('lentList');
+        if (state.lent.length === 0) {
+          lentList.innerHTML = `<div class="theme-card p-5 text-center text-xs theme-text-sub font-semibold">No lent money logged 💸</div>`;
+        } else {
+          lentList.innerHTML = state.lent.map(l => `
+            <div class="theme-card p-4 space-y-2.5">
+              <div class="flex items-start justify-between gap-2">
+                <div>
+                  <div class="flex items-center gap-1.5 flex-wrap">
+                    <h3 class="text-sm font-extrabold">${escapeHtml(l.person)}</h3>
+                    <span class="text-[9px] font-bold px-2 py-0.5 rounded-full ${l.walletSynced ? 'accent-soft-bg' : 'theme-muted theme-text-sub'}">
+                      ${l.walletSynced ? '💰 Wallet Synced' : '📝 Track Only'}
+                    </span>
+                  </div>
+                  <p class="text-[11px] theme-text-sub">Original Lent: ${formatMoney(l.original)}</p>
+                </div>
+                <button type="button" data-delete-lent="${l.id}" class="text-xs theme-text-sub hover:text-rose-500 px-2 py-1">🗑️</button>
+              </div>
+              <div class="flex items-center justify-between pt-1">
+                <div>
+                  <span class="text-[10px] uppercase font-bold theme-text-sub block">Remaining Owed</span>
+                  <span class="text-sm font-extrabold ${l.remaining > 0 ? 'accent-text' : 'text-emerald-500'}">${formatMoney(l.remaining)}</span>
+                </div>
+                ${l.remaining > 0 ? `<button type="button" data-mark-lent-paid="${l.id}" class="px-3.5 py-2 rounded-xl bg-emerald-500 text-white text-xs font-bold active:scale-95 transition">Received / Settled</button>` : `<span class="text-xs font-bold text-emerald-500">Returned! 🎉</span>`}
+              </div>
+            </div>`).join('');
+        }
+      }
+
+      // --- RENDER CHARTS ---
+      function renderCharts() {
+        const container = document.getElementById('chartContainer');
+        const totals = state.widgets.map((w, idx) => {
+          const spent = state.expenses
+            .filter(e => e.widgetId === w.id)
+            .reduce((sum, e) => sum + (Number(e.amount) || 0), 0);
+          return {
+            id: w.id,
+            icon: w.icon || '🐾',
+            title: w.title,
+            spent,
+            color: getGoldenColor(idx)
+          };
+        }).filter(x => x.spent > 0)
+          .sort((a, b) => b.spent - a.spent);
+
+        const grandTotal = totals.reduce((sum, x) => sum + x.spent, 0);
+        if (grandTotal <= 0) {
+          container.innerHTML = `<p class="text-xs theme-text-sub py-6">Add some expenses to see your breakdown chart! 📊</p>`;
+          return;
+        }
+
+        let cumulative = 0;
+        const radius = 68;
+        const circumference = 2 * Math.PI * radius;
+
+        const circles = totals.map(item => {
+          const fraction = item.spent / grandTotal;
+          const dash = fraction * circumference;
+          const offset = -cumulative * circumference;
+          cumulative += fraction;
+          return `<circle cx="90" cy="90" r="${radius}" fill="transparent" stroke="${item.color}" stroke-width="26" stroke-dasharray="${dash} ${circumference}" stroke-dashoffset="${offset}" transform="rotate(-90 90 90)"></circle>`;
+        }).join('');
+
+        const rankedList = totals.map((item, rankIdx) => {
+          const pct = ((item.spent / grandTotal) * 100).toFixed(1);
+          return `
+            <div class="theme-muted p-3 rounded-2xl space-y-1.5">
+              <div class="flex items-center justify-between gap-2 text-xs">
+                <div class="flex items-center gap-2 min-w-0">
+                  <span class="text-[10px] font-extrabold theme-text-sub w-4">#${rankIdx + 1}</span>
+                  <span class="w-3 h-3 rounded-full shrink-0" style="background:${item.color}"></span>
+                  <span class="truncate font-bold">${item.icon} ${escapeHtml(item.title)}</span>
+                </div>
+                <div class="text-right shrink-0">
+                  <span class="font-extrabold">${formatMoney(item.spent)}</span>
+                  <span class="text-[10px] font-bold theme-text-sub ml-1">(${pct}%)</span>
+                </div>
+              </div>
+              <div class="w-full h-1.5 rounded-full theme-card overflow-hidden">
+                <div class="h-full rounded-full transition-all" style="width: ${pct}%; background:${item.color}"></div>
+              </div>
+            </div>`;
+        }).join('');
+
+        container.innerHTML = `
+          <div class="relative flex items-center justify-center">
+            <svg width="180" height="180" viewBox="0 0 180 180">
+              ${circles}
+            </svg>
+            <div class="absolute text-center">
+              <span class="text-[9px] uppercase font-bold theme-text-sub block">Total Spent</span>
+              <span class="text-xs font-extrabold">${formatMoney(grandTotal)}</span>
+            </div>
+          </div>
+          <div class="w-full space-y-2 pt-2">
+            <h3 class="text-xs font-extrabold theme-text-sub uppercase tracking-wider">Ranked Top Spending</h3>
+            ${rankedList}
+          </div>`;
+      }
+
+      function renderAll() {
+        renderHeaderAndBalance();
+        renderWidgets();
+        renderSharedSpaces();
+        renderCalendar();
+        renderSavings();
+        renderOwedAndLent();
+        renderCharts();
+      }
+
+      // --- EVENT LISTENERS ---
+      document.querySelectorAll('[data-close-modal]').forEach(btn => {
+        btn.addEventListener('click', () => closeModal(btn.getAttribute('data-close-modal')));
+      });
+
+      document.getElementById('darkModeToggleBtn').addEventListener('click', () => {
+        const nextDark = !document.body.classList.contains('dark-mode');
+        applyDarkMode(nextDark);
+        showToast(nextDark ? 'Soothing Neon Dark Mode 🌙✨' : 'Pastel Light Mode ☀️🌸');
+      });
+
+      // Tabs
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const target = btn.getAttribute('data-tab');
+          document.querySelectorAll('.tab-btn').forEach(b => {
+            const active = b === btn;
+            b.classList.toggle('accent-bg', active);
+            b.classList.toggle('theme-text-sub', !active);
+          });
+          document.querySelectorAll('.tab-content').forEach(sec => {
+            sec.classList.toggle('hidden', sec.id !== `tab-${target}`);
+          });
+        });
+      });
+
+      // Owed sub-tabs
+      document.querySelectorAll('.owed-sub-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const sub = btn.getAttribute('data-owed-sub');
+          document.querySelectorAll('.owed-sub-btn').forEach(b => {
+            const active = b === btn;
+            b.classList.toggle('accent-bg', active);
+            b.classList.toggle('theme-text-sub', !active);
+          });
+          document.getElementById('owed-sub-borrowed').classList.toggle('hidden', sub !== 'borrowed');
+          document.getElementById('owed-sub-lent').classList.toggle('hidden', sub !== 'lent');
+        });
+      });
+
+      // Mascot Modal
+      function renderMascotGrid() {
+        const grid = document.getElementById('mascotGrid');
+        grid.innerHTML = mascotOrder.map(key => {
+          const val = mascots[key];
+          const isSelected = state.activeMascot === key;
+          return `
+            <button type="button" data-select-mascot="${key}" class="p-2.5 rounded-2xl theme-muted flex items-center gap-2.5 text-left transition ${isSelected ? 'accent-ring' : ''}">
+              <span class="text-2xl shrink-0">${val.emoji}</span>
+              <div class="min-w-0 flex-1">
+                <span class="text-xs font-extrabold block truncate">${val.name}</span>
+                <span class="text-[10px] theme-text-sub font-semibold block truncate">${val.member}</span>
+                <div class="flex items-center gap-1 mt-1">
+                  <span class="w-3 h-1.5 rounded-full" style="background:${val.light.accent}" title="Light Pastel"></span>
+                  <span class="w-3 h-1.5 rounded-full" style="background:${val.dark.accent}" title="Dark Neon"></span>
+                </div>
+              </div>
+            </button>`;
+        }).join('');
+      }
+
+      document.getElementById('openMascotBtn').addEventListener('click', () => {
+        renderMascotGrid();
+        openModal('mascotModal');
+      });
+
+      document.getElementById('mascotGrid').addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-select-mascot]');
+        if (!btn) return;
+        state.activeMascot = btn.getAttribute('data-select-mascot');
+        saveState();
+        renderHeaderAndBalance();
+        renderCozyShelf();
+        renderMascotGrid();
+        const m = mascots[state.activeMascot];
+        showToast(`${m.emoji} ${m.name} (${m.member}) theme applied!`);
+      });
+
+      // Initial Cash & Currency
+      document.getElementById('openInitialModalBtn').addEventListener('click', () => {
+        document.getElementById('initialCashInput').value = state.initialCash || '';
+        openModal('initialModal');
+      });
+
+      document.getElementById('saveInitialCashBtn').addEventListener('click', () => {
+        state.initialCash = Math.max(0, Number(document.getElementById('initialCashInput').value) || 0);
+        saveState();
+        renderAll();
+        closeModal('initialModal');
+        showToast('Initial cash updated! 💰');
+      });
+
+      document.getElementById('openCurrencyBtn').addEventListener('click', () => {
+        document.getElementById('currencyInput').value = state.currency;
+        openModal('currencyModal');
+      });
+
+      document.getElementById('saveCurrencyBtn').addEventListener('click', () => {
+        const val = document.getElementById('currencyInput').value.trim();
+        if (val) state.currency = val;
+        saveState();
+        renderAll();
+        closeModal('currencyModal');
+        showToast('Currency updated!');
+      });
+
+      // Quotes & Quote Library
+      document.getElementById('newQuoteBtn').addEventListener('click', () => {
+        if (state.quoteMode === 'favorites' && state.quotes.filter(q => q.fav).length === 0) {
+          showToast('No ⭐ favourites yet—showing random quote!');
+        }
+        showNextQuote(true);
+      });
+
+      document.getElementById('openQuoteLibraryBtn').addEventListener('click', () => {
+        renderQuoteLibrary();
+        openModal('quoteLibraryModal');
+      });
+
+      document.querySelectorAll('.quote-mode-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.quoteMode = btn.getAttribute('data-quote-mode');
+          saveState();
+          renderQuoteLibrary();
+          showNextQuote(true);
+          if (state.quoteMode === 'favorites' && state.quotes.filter(q => q.fav).length === 0) {
+            showToast('Star some quotes ⭐ to use Favourites Only!');
+          } else {
+            showToast(state.quoteMode === 'favorites' ? 'Favourites Only ⭐' : 'Random Mode 🎲');
+          }
+        });
+      });
+
+      document.getElementById('quoteForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const text = document.getElementById('quoteInputText').value.trim();
+        const member = document.getElementById('quoteMemberSelect').value;
+        if (!text) return;
+
+        if (editingQuoteId) {
+          const q = state.quotes.find(x => x.id === editingQuoteId);
+          if (q) {
+            q.text = text;
+            q.member = member;
+          }
+          editingQuoteId = null;
+          document.getElementById('quoteSubmitBtn').textContent = 'Add';
+          document.getElementById('quoteCancelEditBtn').classList.add('hidden');
+          showToast('Quote updated! ✏️');
+        } else {
+          state.quotes.unshift({ id: 'q_' + Date.now(), text, member, fav: false });
+          showToast('Quote added! 🐾');
+        }
+
+        e.target.reset();
+        saveState();
+        renderQuoteLibrary();
+        showNextQuote(false);
+      });
+
+      document.getElementById('quoteCancelEditBtn').addEventListener('click', () => {
+        editingQuoteId = null;
+        document.getElementById('quoteForm').reset();
+        document.getElementById('quoteSubmitBtn').textContent = 'Add';
+        document.getElementById('quoteCancelEditBtn').classList.add('hidden');
+      });
+
+      document.getElementById('quoteLibraryList').addEventListener('click', (e) => {
+        const favBtn = e.target.closest('[data-fav-quote]');
+        if (favBtn) {
+          const q = state.quotes.find(x => x.id === favBtn.getAttribute('data-fav-quote'));
+          if (q) {
+            q.fav = !q.fav;
+            saveState();
+            renderQuoteLibrary();
+          }
+          return;
+        }
+
+        const editBtn = e.target.closest('[data-edit-quote]');
+        if (editBtn) {
+          const q = state.quotes.find(x => x.id === editBtn.getAttribute('data-edit-quote'));
+          if (q) {
+            editingQuoteId = q.id;
+            document.getElementById('quoteInputText').value = q.text;
+            document.getElementById('quoteMemberSelect').value = q.member;
+            document.getElementById('quoteSubmitBtn').textContent = 'Save';
+            document.getElementById('quoteCancelEditBtn').classList.remove('hidden');
+          }
+          return;
+        }
+
+        const delBtn = e.target.closest('[data-delete-quote]');
+        if (delBtn) {
+          const id = delBtn.getAttribute('data-delete-quote');
+          state.quotes = state.quotes.filter(x => x.id !== id);
+          if (editingQuoteId === id) {
+            editingQuoteId = null;
+            document.getElementById('quoteForm').reset();
+            document.getElementById('quoteSubmitBtn').textContent = 'Add';
+            document.getElementById('quoteCancelEditBtn').classList.add('hidden');
+          }
+          saveState();
+          renderQuoteLibrary();
+          showNextQuote(false);
+          showToast('Quote deleted');
+        }
+      });
+
+      // Widgets, Expanded Categories & Custom Category Creator
+      function openNewWidgetWithDefaults() {
+        renderCategoryDropdown();
+        const firstCat = getAllCategories()[0];
+        document.getElementById('widgetTitleInput').value = firstCat ? firstCat.label : '';
+        openModal('newWidgetModal');
+      }
+
+      document.getElementById('openNewWidgetModalBtn').addEventListener('click', openNewWidgetWithDefaults);
+
+      document.getElementById('widgetCategorySelect').addEventListener('change', (e) => {
+        const chosen = getAllCategories().find(c => c.id === e.target.value);
+        if (chosen) {
+          document.getElementById('widgetTitleInput').value = chosen.label;
+        }
+      });
+
+      document.getElementById('openCategoryManagerBtn').addEventListener('click', () => {
+        renderCustomCategoryModal();
+        openModal('customCategoryModal');
+      });
+
+      document.getElementById('openCustomCategoryFromWidgetBtn').addEventListener('click', () => {
+        renderCustomCategoryModal();
+        openModal('customCategoryModal');
+      });
+
+      document.getElementById('emojiPickerGrid').addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-pick-emoji]');
+        if (!btn) return;
+        selectedCustomEmoji = btn.getAttribute('data-pick-emoji');
+        renderCustomCategoryModal();
+      });
+
+      document.getElementById('customCategoryForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const label = document.getElementById('customCategoryNameInput').value.trim();
+        if (!label) return;
+        const newCat = {
+          id: 'ccat_' + Date.now(),
+          icon: selectedCustomEmoji || '🐾',
+          label
+        };
+        state.customCategories.push(newCat);
+        saveState();
+        e.target.reset();
+        renderCustomCategoryModal();
+        renderCategoryDropdown(newCat.id);
+        document.getElementById('widgetTitleInput').value = newCat.label;
+        showToast(`${newCat.icon} ${newCat.label} added!`);
+      });
+
+      document.getElementById('customCategoriesList').addEventListener('click', (e) => {
+        const delBtn = e.target.closest('[data-delete-custom-cat]');
+        if (!delBtn) return;
+        const id = delBtn.getAttribute('data-delete-custom-cat');
+        state.customCategories = state.customCategories.filter(c => c.id !== id);
+        saveState();
+        renderCustomCategoryModal();
+        renderCategoryDropdown();
+        showToast('Custom category removed');
+      });
+
+      document.getElementById('newWidgetForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const title = document.getElementById('widgetTitleInput').value.trim();
+        const target = Number(document.getElementById('widgetTargetInput').value) || 0;
+        const selectedCatId = document.getElementById('widgetCategorySelect').value;
+        const catObj = getAllCategories().find(c => c.id === selectedCatId);
+        const icon = catObj ? catObj.icon : '🐾';
+        if (!title) return;
+        state.widgets.push({ id: 'w_' + Date.now(), title, target, icon });
+        e.target.reset();
+        saveState();
+        renderAll();
+        closeModal('newWidgetModal');
+        showToast('Widget created! 🐾');
+      });
+
+      document.getElementById('widgetsContainer').addEventListener('click', (e) => {
+        const delBtn = e.target.closest('[data-delete-widget]');
+        if (delBtn) {
+          const id = delBtn.getAttribute('data-delete-widget');
+          state.widgets = state.widgets.filter(w => w.id !== id);
+          state.expenses = state.expenses.filter(ex => ex.widgetId !== id);
+          saveState();
+          renderAll();
+          showToast('Widget removed');
+          return;
+        }
+
+        const addBtn = e.target.closest('[data-add-expense]');
+        if (addBtn) {
+          activeWidgetId = addBtn.getAttribute('data-add-expense');
+          const w = state.widgets.find(x => x.id === activeWidgetId);
+          document.getElementById('addExpenseModalTitle').textContent = w ? `Add to ${w.title}` : 'Add Expense';
+          document.getElementById('expItemDate').value = getTodayStr();
+          openModal('addExpenseModal');
+          return;
+        }
+
+        const notesBtn = e.target.closest('[data-view-notes]');
+        if (notesBtn) {
+          const id = notesBtn.getAttribute('data-view-notes');
+          const w = state.widgets.find(x => x.id === id);
+          document.getElementById('itemNotesTitle').textContent = w ? `🧾 ${w.title} Notes` : '🧾 Item Notes';
+          const items = state.expenses.filter(ex => ex.widgetId === id);
+          const list = document.getElementById('itemNotesList');
+          list.innerHTML = items.length === 0
+            ? `<p class="text-xs theme-text-sub text-center py-4">No items logged yet.</p>`
+            : items.map(ex => `
+              <div class="theme-muted p-3 rounded-2xl flex items-center justify-between gap-2">
+                <div class="min-w-0">
+                  <p class="text-xs font-bold truncate">${escapeHtml(ex.note)}</p>
+                  <p class="text-[10px] theme-text-sub">${ex.date}</p>
+                </div>
+                <span class="text-xs font-extrabold text-rose-500 shrink-0">-${formatMoney(ex.amount)}</span>
+              </div>`).join('');
+          openModal('itemNotesModal');
+        }
+      });
+
+      document.getElementById('addExpenseForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (!activeWidgetId) return;
+        const note = document.getElementById('expItemNote').value.trim();
+        const amount = Number(document.getElementById('expItemAmount').value) || 0;
+        const date = document.getElementById('expItemDate').value || getTodayStr();
+        if (!note || amount <= 0) return;
+
+        state.expenses.push({ id: 'ex_' + Date.now(), widgetId: activeWidgetId, note, amount, date });
+        e.target.reset();
+        saveState();
+        renderAll();
+        closeModal('addExpenseModal');
+        showToast('Expense logged! 🐾');
+      });
+
+      // --- SHARED SPACES LOGIC ---
+      document.getElementById('openNewSharedSpaceModalBtn').addEventListener('click', () => openModal('newSharedSpaceModal'));
+
+      document.getElementById('newSharedSpaceForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = document.getElementById('sharedSpaceNameInput').value.trim();
+        const budget = Math.max(0, Number(document.getElementById('sharedSpaceBudgetInput').value) || 0);
+        const rawMembers = document.getElementById('sharedSpaceMembersInput').value;
+        const members = rawMembers.split(',')
+          .map(s => s.trim())
+          .filter(s => s && s.toLowerCase() !== 'me');
+        if (!name) return;
+        state.sharedSpaces.push({
+          id: 'sp_' + Date.now(),
+          name,
+          budget,
+          members: members.length > 0 ? members : ['Friend'],
+          bills: []
+        });
+        e.target.reset();
+        saveState();
+        renderAll();
+        closeModal('newSharedSpaceModal');
+        showToast(budget > 0 ? `Shared Space created with ${formatMoney(budget)} budget! 🏘️` : 'Shared Space created! 🏘️');
+      });
+
+      document.getElementById('editSharedBudgetForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const sp = state.sharedSpaces.find(x => x.id === activeSharedSpaceId);
+        if (!sp) return;
+        sp.budget = Math.max(0, Number(document.getElementById('editSharedBudgetInput').value) || 0);
+        saveState();
+        renderAll();
+        closeModal('editSharedBudgetModal');
+        showToast(`Shared budget updated to ${formatMoney(sp.budget)}! 💰`);
+      });
+
+      document.getElementById('topUpSharedBudgetForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const sp = state.sharedSpaces.find(x => x.id === activeSharedSpaceId);
+        if (!sp) return;
+        const addAmt = Math.max(0, Number(document.getElementById('topUpSharedBudgetInput').value) || 0);
+        if (addAmt <= 0) return;
+        sp.budget = (Number(sp.budget) || 0) + addAmt;
+        e.target.reset();
+        saveState();
+        renderAll();
+        closeModal('topUpSharedBudgetModal');
+        showToast(`Topped up +${formatMoney(addAmt)}! Total pool: ${formatMoney(sp.budget)} ✨`);
+      });
+
+      function updateSharedBillSplitPreview() {
+        const sp = state.sharedSpaces.find(x => x.id === activeSharedSpaceId);
+        if (!sp) return;
+        const total = Number(document.getElementById('sharedBillAmountInput').value) || 0;
+        const splitType = document.getElementById('sharedBillSplitTypeSelect').value;
+        const myShareInput = document.getElementById('sharedBillMyShareInput');
+
+        if (splitType === 'equal') {
+          const count = 1 + (sp.members ? sp.members.length : 0);
+          const equalAmt = count > 0 ? Number((total / count).toFixed(2)) : total;
+          myShareInput.readOnly = true;
+          myShareInput.classList.add('opacity-80');
+          myShareInput.value = equalAmt || '';
+        } else {
+          myShareInput.readOnly = false;
+          myShareInput.classList.remove('opacity-80');
+        }
+
+        const currentMyShare = Number(myShareInput.value) || 0;
+        document.getElementById('syncSharePreviewAmt').textContent = formatMoney(currentMyShare);
+      }
+
+      document.getElementById('sharedBillAmountInput').addEventListener('input', updateSharedBillSplitPreview);
+      document.getElementById('sharedBillSplitTypeSelect').addEventListener('change', updateSharedBillSplitPreview);
+      document.getElementById('sharedBillMyShareInput').addEventListener('input', () => {
+        const currentMyShare = Number(document.getElementById('sharedBillMyShareInput').value) || 0;
+        document.getElementById('syncSharePreviewAmt').textContent = formatMoney(currentMyShare);
+      });
+
+      document.getElementById('syncShareToPersonalCheck').addEventListener('change', (e) => {
+        document.getElementById('syncShareWidgetPickerBox').classList.toggle('hidden', !e.target.checked);
+      });
+
+      function openSharedSpaceDetail(spaceId) {
+        activeSharedSpaceId = spaceId;
+        const sp = state.sharedSpaces.find(x => x.id === spaceId);
+        if (!sp) return;
+        const stats = computeSpaceStats(sp);
+        document.getElementById('sharedDetailTitle').textContent = `🧾 ${sp.name}`;
+
+        const netLines = Object.entries(stats.personNet).map(([p, net]) => {
+          if (Math.abs(net) < 0.01) return `<div class="flex justify-between"><span>${escapeHtml(p)}:</span><span class="font-bold theme-text-sub">Settled ✨</span></div>`;
+          if (net > 0) return `<div class="flex justify-between"><span>${escapeHtml(p)} owes you:</span><span class="font-extrabold text-emerald-500">${formatMoney(net)}</span></div>`;
+          return `<div class="flex justify-between"><span>You owe ${escapeHtml(p)}:</span><span class="font-extrabold text-rose-500">${formatMoney(Math.abs(net))}</span></div>`;
+        }).join('');
+
+        const budgetLine = stats.budget > 0 ? `
+          <div class="flex justify-between font-bold">
+            <span>Shared Budget Left:</span>
+            <span class="${stats.remainingBudget < 0 ? 'text-rose-500' : 'text-emerald-500'}">
+              ${formatMoney(stats.remainingBudget)} / ${formatMoney(stats.budget)}
+            </span>
+          </div>
+        ` : '';
+
+        document.getElementById('sharedDetailSummary').innerHTML = `
+          ${budgetLine}
+          <div class="flex justify-between font-bold"><span>Total Shared Spend:</span><span>${formatMoney(stats.allBillsTotal)}</span></div>
+          <div class="flex justify-between font-bold"><span>My Unsettled Share:</span><span class="accent-text">${formatMoney(stats.myTotalShare)}</span></div>
+          <div class="pt-1 border-t border-current/10 space-y-1">${netLines}</div>
+          ${(sp.bills || []).some(b => !b.settled) ? `<button type="button" id="settleAllSpaceBtn" class="w-full mt-2 py-2 rounded-xl bg-emerald-500 text-white text-xs font-bold active:scale-95 transition">Settle All Space Bills 🎉</button>` : ''}
+        `;
+
+        const bills = sp.bills || [];
+        document.getElementById('sharedDetailBillsList').innerHTML = bills.length === 0
+          ? `<p class="text-xs theme-text-sub text-center py-4">No shared bills logged yet.</p>`
+          : bills.map(b => `
+            <div class="theme-muted p-3 rounded-2xl space-y-1.5 ${b.settled ? 'opacity-65' : ''}">
+              <div class="flex items-start justify-between gap-2">
+                <div class="min-w-0">
+                  <p class="text-xs font-extrabold truncate">${escapeHtml(b.desc)}</p>
+                  <p class="text-[10px] theme-text-sub">${b.date} • Paid by <strong>${escapeHtml(b.paidBy)}</strong></p>
+                </div>
+                <div class="text-right shrink-0">
+                  <span class="text-xs font-extrabold block">${formatMoney(b.amount)}</span>
+                  <span class="text-[10px] font-bold accent-text">My share: ${formatMoney(b.myShare)}</span>
+                </div>
+              </div>
+              <div class="flex items-center justify-between pt-1">
+                ${b.settled
+                  ? `<span class="text-[10px] font-bold text-emerald-500">Settled ✓ (Counted in budget)</span>`
+                  : `<button type="button" data-settle-bill="${b.id}" class="text-[10px] font-bold px-2.5 py-1 rounded-lg bg-emerald-500/15 text-emerald-400">Mark Settled</button>`
+                }
+                <button type="button" data-delete-bill="${b.id}" class="text-[10px] font-bold text-rose-500 px-1.5 py-0.5">Delete</button>
+              </div>
+            </div>`).join('');
+
+        const settleAllBtn = document.getElementById('settleAllSpaceBtn');
+        if (settleAllBtn) {
+          settleAllBtn.addEventListener('click', () => {
+            sp.bills.forEach(b => { b.settled = true; });
+            saveState();
+            renderAll();
+            openSharedSpaceDetail(spaceId);
+            launchConfetti();
+            showToast('Shared Space settled! 🎉');
+          });
+        }
+
+        openModal('sharedSpaceDetailModal');
+      }
+
+      document.getElementById('sharedSpacesContainer').addEventListener('click', (e) => {
+        const delBtn = e.target.closest('[data-delete-space]');
+        if (delBtn) {
+          const id = delBtn.getAttribute('data-delete-space');
+          state.sharedSpaces = state.sharedSpaces.filter(s => s.id !== id);
+          saveState();
+          renderAll();
+          showToast('Shared Space deleted');
+          return;
+        }
+
+        const editBudgetBtn = e.target.closest('[data-edit-space-budget]');
+        if (editBudgetBtn) {
+          activeSharedSpaceId = editBudgetBtn.getAttribute('data-edit-space-budget');
+          const sp = state.sharedSpaces.find(x => x.id === activeSharedSpaceId);
+          if (!sp) return;
+          document.getElementById('editSharedBudgetTitle').textContent = `Budget • ${sp.name}`;
+          document.getElementById('editSharedBudgetInput').value = sp.budget || '';
+          openModal('editSharedBudgetModal');
+          return;
+        }
+
+        const topUpBtn = e.target.closest('[data-topup-space-budget]');
+        if (topUpBtn) {
+          activeSharedSpaceId = topUpBtn.getAttribute('data-topup-space-budget');
+          const sp = state.sharedSpaces.find(x => x.id === activeSharedSpaceId);
+          if (!sp) return;
+          document.getElementById('topUpSharedBudgetTitle').textContent = `Top Up • ${sp.name}`;
+          document.getElementById('topUpSharedBudgetDesc').textContent = `Current budget pool: ${formatMoney(sp.budget)}. Enter an amount to add onto this pool (does not deduct from your main wallet).`;
+          document.getElementById('topUpSharedBudgetInput').value = '';
+          openModal('topUpSharedBudgetModal');
+          return;
+        }
+
+        const viewBtn = e.target.closest('[data-view-space]');
+        if (viewBtn) {
+          openSharedSpaceDetail(viewBtn.getAttribute('data-view-space'));
+          return;
+        }
+
+        const addBillBtn = e.target.closest('[data-add-bill]');
+        if (addBillBtn) {
+          activeSharedSpaceId = addBillBtn.getAttribute('data-add-bill');
+          const sp = state.sharedSpaces.find(x => x.id === activeSharedSpaceId);
+          if (!sp) return;
+          document.getElementById('addSharedBillTitle').textContent = `Add Bill • ${sp.name}`;
+          const members = ['Me', ...(sp.members || [])];
+          document.getElementById('sharedBillPaidBySelect').innerHTML = members
+            .map(m => `<option value="${escapeHtml(m)}">${escapeHtml(m)}</option>`).join('');
+          document.getElementById('sharedBillDateInput').value = getTodayStr();
+          document.getElementById('syncShareToPersonalCheck').checked = false;
+          document.getElementById('syncShareWidgetPickerBox').classList.add('hidden');
+
+          const widgetSelect = document.getElementById('syncShareWidgetSelect');
+          if (state.widgets.length > 0) {
+            widgetSelect.innerHTML = state.widgets
+              .map(w => `<option value="${w.id}">${w.icon} ${escapeHtml(w.title)}</option>`).join('');
+          } else {
+            widgetSelect.innerHTML = `<option value="__auto_shared__">🏘️ Shared Bills (Auto-create widget)</option>`;
+          }
+
+          updateSharedBillSplitPreview();
+          openModal('addSharedBillModal');
+        }
+      });
+
+      document.getElementById('addSharedBillForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const sp = state.sharedSpaces.find(x => x.id === activeSharedSpaceId);
+        if (!sp) return;
+
+        const desc = document.getElementById('sharedBillDescInput').value.trim();
+        const amount = Number(document.getElementById('sharedBillAmountInput').value) || 0;
+        const paidBy = document.getElementById('sharedBillPaidBySelect').value;
+        const splitType = document.getElementById('sharedBillSplitTypeSelect').value;
+        const myShare = Math.min(amount, Math.max(0, Number(document.getElementById('sharedBillMyShareInput').value) || 0));
+        const date = document.getElementById('sharedBillDateInput').value || getTodayStr();
+        const syncPersonal = document.getElementById('syncShareToPersonalCheck').checked;
+
+        if (!desc || amount <= 0) return;
+
+        sp.bills.unshift({
+          id: 'sb_' + Date.now(),
+          desc,
+          amount,
+          paidBy,
+          splitType,
+          myShare,
+          date,
+          settled: false
+        });
+
+        if (syncPersonal && myShare > 0) {
+          let targetWidgetId = document.getElementById('syncShareWidgetSelect').value;
+          if (targetWidgetId === '__auto_shared__' || !state.widgets.some(w => w.id === targetWidgetId)) {
+            let sharedWidget = state.widgets.find(w => w.title === 'Shared Bills');
+            if (!sharedWidget) {
+              sharedWidget = { id: 'w_' + (Date.now() + 1), title: 'Shared Bills', target: 0, icon: '🏘️' };
+              state.widgets.push(sharedWidget);
+            }
+            targetWidgetId = sharedWidget.id;
+          }
+          state.expenses.push({
+            id: 'ex_' + (Date.now() + 2),
+            widgetId: targetWidgetId,
+            note: `${desc} (${sp.name} share)`,
+            amount: myShare,
+            date
+          });
+        }
+
+        e.target.reset();
+        saveState();
+        renderAll();
+        closeModal('addSharedBillModal');
+        showToast(syncPersonal ? 'Deducted from shared budget & main wallet! 🏘️✨' : 'Deducted from shared budget! 🏘️');
+      });
+
+      document.getElementById('sharedDetailBillsList').addEventListener('click', (e) => {
+        const sp = state.sharedSpaces.find(x => x.id === activeSharedSpaceId);
+        if (!sp) return;
+
+        const settleBtn = e.target.closest('[data-settle-bill]');
+        if (settleBtn) {
+          const b = sp.bills.find(x => x.id === settleBtn.getAttribute('data-settle-bill'));
+          if (b) {
+            b.settled = true;
+            saveState();
+            renderAll();
+            openSharedSpaceDetail(activeSharedSpaceId);
+            showToast('Bill marked settled ✓');
+          }
+          return;
+        }
+
+        const delBtn = e.target.closest('[data-delete-bill]');
+        if (delBtn) {
+          const bid = delBtn.getAttribute('data-delete-bill');
+          sp.bills = sp.bills.filter(x => x.id !== bid);
+          saveState();
+          renderAll();
+          openSharedSpaceDetail(activeSharedSpaceId);
+          showToast('Shared bill deleted');
+        }
+      });
+
+      // Calendar
+      document.getElementById('prevMonthBtn').addEventListener('click', () => {
+        calMonth--;
+        if (calMonth < 0) { calMonth = 11; calYear--; }
+        renderCalendar();
+      });
+
+      document.getElementById('nextMonthBtn').addEventListener('click', () => {
+        calMonth++;
+        if (calMonth > 11) { calMonth = 0; calYear++; }
+        renderCalendar();
+      });
+
+      function openDailyLog(dateStr) {
+        document.getElementById('dailyLogDateLabel').textContent = `Date: ${dateStr}`;
+        const items = state.expenses.filter(e => e.date === dateStr);
+        const list = document.getElementById('dailyLogItems');
+        const total = items.reduce((s, e) => s + (Number(e.amount) || 0), 0);
+        document.getElementById('dailyLogTotal').textContent = formatMoney(total);
+
+        list.innerHTML = items.length === 0
+          ? `<p class="text-xs theme-text-sub text-center py-4">No spending on this day ✨</p>`
+          : items.map(e => {
+            const w = state.widgets.find(x => x.id === e.widgetId);
+            return `
+              <div class="theme-muted p-3 rounded-2xl flex items-center justify-between gap-2">
+                <div class="min-w-0">
+                  <p class="text-xs font-bold truncate">${escapeHtml(e.note)}</p>
+                  <p class="text-[10px] accent-text font-semibold">${w ? escapeHtml(w.title) : 'Expense'}</p>
+                </div>
+                <div class="flex items-center gap-2 shrink-0">
+                  <span class="text-xs font-extrabold text-rose-500">-${formatMoney(e.amount)}</span>
+                  <button type="button" data-remove-expense="${e.id}" data-log-date="${dateStr}" class="px-2 py-1 rounded-lg bg-rose-500/15 text-rose-500 text-[10px] font-bold">❌ Remove</button>
+                </div>
+              </div>`;
+          }).join('');
+        openModal('dailyLogModal');
+      }
+
+      document.getElementById('calendarGrid').addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-cal-date]');
+        if (!btn) return;
+        openDailyLog(btn.getAttribute('data-cal-date'));
+      });
+
+      document.getElementById('dailyLogItems').addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-remove-expense]');
+        if (!btn) return;
+        const id = btn.getAttribute('data-remove-expense');
+        const dateStr = btn.getAttribute('data-log-date');
+        state.expenses = state.expenses.filter(ex => ex.id !== id);
+        saveState();
+        renderAll();
+        openDailyLog(dateStr);
+        showToast('Expense removed & refunded!');
+      });
+
+      // Savings, Scene Toggle & Tap-to-Place Interactions
+      document.getElementById('toggleSceneModeBtn').addEventListener('click', () => {
+        state.sceneMode = state.sceneMode === 'forest' ? 'room' : 'forest';
+        selectedRoomItemId = null;
+        saveState();
+        renderCozyShelf();
+        showToast(state.sceneMode === 'forest' ? 'Switched to Cozy Forest 🌲✨' : 'Switched to Sunlit Room 🪟✨');
+      });
+
+      document.getElementById('cozyShelfGrid').addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-tray-item]');
+        if (!btn) return;
+        const id = btn.getAttribute('data-tray-item');
+        selectedRoomItemId = (selectedRoomItemId === id) ? null : id;
+        renderCozyShelf();
+      });
+
+      document.getElementById('cozyRoomStage').addEventListener('click', (e) => {
+        const placedBtn = e.target.closest('[data-room-placed]');
+        if (placedBtn) {
+          const id = placedBtn.getAttribute('data-room-placed');
+          selectedRoomItemId = (selectedRoomItemId === id) ? null : id;
+          renderCozyShelf();
+          return;
+        }
+        if (!selectedRoomItemId) return;
+        const stage = document.getElementById('cozyRoomStage');
+        const rect = stage.getBoundingClientRect();
+        const xPct = Math.min(90, Math.max(10, Math.round(((e.clientX - rect.left) / rect.width) * 100)));
+        const yPct = Math.min(88, Math.max(16, Math.round(((e.clientY - rect.top) / rect.height) * 100)));
+        const placements = getActivePlacementsMap();
+        placements[selectedRoomItemId] = { x: xPct, y: yPct };
+        saveState();
+        renderCozyShelf();
+      });
+
+      document.getElementById('storeRoomItemBtn').addEventListener('click', () => {
+        if (!selectedRoomItemId) return;
+        const placements = getActivePlacementsMap();
+        delete placements[selectedRoomItemId];
+        selectedRoomItemId = null;
+        saveState();
+        renderCozyShelf();
+        showToast('Item stored back in tray 🧺');
+      });
+
+      document.getElementById('deselectRoomItemBtn').addEventListener('click', () => {
+        selectedRoomItemId = null;
+        renderCozyShelf();
+      });
+
+      document.getElementById('openCustomizeMilestonesBtn').addEventListener('click', () => {
+        editingMilestoneId = null;
+        selectedMilestoneEmoji = '🌱';
+        document.getElementById('milestoneForm').reset();
+        document.getElementById('milestoneSubmitBtn').textContent = '+ Add Milestone 🐾';
+        document.getElementById('milestoneCancelEditBtn').classList.add('hidden');
+        renderCustomizeMilestonesModal();
+        openModal('customizeMilestonesModal');
+      });
+
+      document.getElementById('milestoneEmojiGrid').addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-pick-ms-emoji]');
+        if (!btn) return;
+        selectedMilestoneEmoji = btn.getAttribute('data-pick-ms-emoji');
+        renderCustomizeMilestonesModal();
+      });
+
+      document.getElementById('milestoneForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = document.getElementById('milestoneNameInput').value.trim();
+        const target = Math.max(1, Number(document.getElementById('milestoneTargetInput').value) || 0);
+        if (!name || target <= 0) return;
+
+        if (editingMilestoneId) {
+          const ms = state.savingsMilestones.find(x => x.id === editingMilestoneId);
+          if (ms) {
+            ms.icon = selectedMilestoneEmoji || '🌱';
+            ms.name = name;
+            ms.target = target;
+          }
+          editingMilestoneId = null;
+          document.getElementById('milestoneSubmitBtn').textContent = '+ Add Milestone 🐾';
+          document.getElementById('milestoneCancelEditBtn').classList.add('hidden');
+          showToast('Milestone updated! ✨');
+        } else {
+          state.savingsMilestones.push({
+            id: 'ms_' + Date.now(),
+            icon: selectedMilestoneEmoji || '🌱',
+            name,
+            target
+          });
+          showToast(`${selectedMilestoneEmoji} ${name} added! 🐾`);
+        }
+
+        e.target.reset();
+        syncSavingsUnlocks(true);
+        saveState();
+        renderCustomizeMilestonesModal();
+        renderCozyShelf();
+      });
+
+      document.getElementById('milestoneCancelEditBtn').addEventListener('click', () => {
+        editingMilestoneId = null;
+        document.getElementById('milestoneForm').reset();
+        document.getElementById('milestoneSubmitBtn').textContent = '+ Add Milestone 🐾';
+        document.getElementById('milestoneCancelEditBtn').classList.add('hidden');
+      });
+
+      document.getElementById('milestonesList').addEventListener('click', (e) => {
+        const editBtn = e.target.closest('[data-edit-milestone]');
+        if (editBtn) {
+          const ms = state.savingsMilestones.find(x => x.id === editBtn.getAttribute('data-edit-milestone'));
+          if (ms) {
+            editingMilestoneId = ms.id;
+            selectedMilestoneEmoji = ms.icon || '🌱';
+            document.getElementById('milestoneNameInput').value = ms.name;
+            document.getElementById('milestoneTargetInput').value = ms.target;
+            document.getElementById('milestoneSubmitBtn').textContent = 'Save Changes ✨';
+            document.getElementById('milestoneCancelEditBtn').classList.remove('hidden');
+            renderCustomizeMilestonesModal();
+          }
+          return;
+        }
+
+        const delBtn = e.target.closest('[data-delete-milestone]');
+        if (delBtn) {
+          const id = delBtn.getAttribute('data-delete-milestone');
+          state.savingsMilestones = state.savingsMilestones.filter(x => x.id !== id);
+          state.unlockedMilestoneIds = state.unlockedMilestoneIds.filter(x => x !== id);
+          delete state.roomPlacements[id];
+          delete state.forestPlacements[id];
+          if (selectedRoomItemId === id) selectedRoomItemId = null;
+          if (editingMilestoneId === id) {
+            editingMilestoneId = null;
+            document.getElementById('milestoneForm').reset();
+            document.getElementById('milestoneSubmitBtn').textContent = '+ Add Milestone 🐾';
+            document.getElementById('milestoneCancelEditBtn').classList.add('hidden');
+          }
+          saveState();
+          renderCustomizeMilestonesModal();
+          renderCozyShelf();
+          showToast('Milestone removed');
+        }
+      });
+
+      document.getElementById('openNewGoalModalBtn').addEventListener('click', () => openModal('newGoalModal'));
+
+      document.getElementById('newGoalForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const title = document.getElementById('goalTitleInput').value.trim();
+        const target = Number(document.getElementById('goalTargetInput').value) || 0;
+        if (!title || target <= 0) return;
+        state.savings.push({ id: 'g_' + Date.now(), title, target, saved: 0 });
+        e.target.reset();
+        saveState();
+        renderAll();
+        closeModal('newGoalModal');
+        showToast('Savings goal started! 🐷');
+      });
+
+      document.getElementById('savingsContainer').addEventListener('click', (e) => {
+        const delBtn = e.target.closest('[data-delete-goal]');
+        if (delBtn) {
+          const id = delBtn.getAttribute('data-delete-goal');
+          state.savings = state.savings.filter(g => g.id !== id);
+          saveState();
+          renderAll();
+          showToast('Goal removed');
+          return;
+        }
+        const addBtn = e.target.closest('[data-add-savings]');
+        if (addBtn) {
+          activeGoalId = addBtn.getAttribute('data-add-savings');
+          openModal('addSavingsModal');
+          return;
+        }
+        const withdrawBtn = e.target.closest('[data-withdraw-savings]');
+        if (withdrawBtn) {
+          activeGoalId = withdrawBtn.getAttribute('data-withdraw-savings');
+          const g = state.savings.find(x => x.id === activeGoalId);
+          if (!g || g.saved <= 0) return;
+          document.getElementById('withdrawSavingsTitle').textContent = `Withdraw • ${g.title}`;
+          const input = document.getElementById('withdrawSavingsAmountInput');
+          input.max = g.saved;
+          input.value = '';
+          openModal('withdrawSavingsModal');
+        }
+      });
+
+      document.getElementById('addSavingsForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const amt = Number(document.getElementById('addSavingsAmountInput').value) || 0;
+        const g = state.savings.find(x => x.id === activeGoalId);
+        if (g && amt > 0) {
+          g.saved += amt;
+          syncSavingsUnlocks(true);
+          saveState();
+          renderAll();
+          closeModal('addSavingsModal');
+          e.target.reset();
+          showToast('Saved! 🐷✨');
+        }
+      });
+
+      document.getElementById('withdrawSavingsForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const g = state.savings.find(x => x.id === activeGoalId);
+        if (!g) return;
+        const rawAmt = Number(document.getElementById('withdrawSavingsAmountInput').value) || 0;
+        const amt = Math.min(g.saved, Math.max(0, rawAmt));
+        if (amt <= 0) return;
+        g.saved = Math.max(0, Number((g.saved - amt).toFixed(2)));
+        saveState();
+        renderAll();
+        closeModal('withdrawSavingsModal');
+        e.target.reset();
+        showToast(`Withdrew ${formatMoney(amt)} to wallet. Unlocks stayed safe! 🛡️🐾`);
+      });
+
+      // --- SMARTER DEBTS & LENT ---
+      document.getElementById('openLogDebtModalBtn').addEventListener('click', () => {
+        document.getElementById('debtSyncWalletCheck').checked = true;
+        openModal('logDebtModal');
+      });
+
+      document.getElementById('openLogLentModalBtn').addEventListener('click', () => {
+        document.getElementById('lentSyncWalletCheck').checked = true;
+        openModal('logLentModal');
+      });
+
+      document.getElementById('logDebtForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const person = document.getElementById('debtPersonInput').value.trim();
+        const amt = Number(document.getElementById('debtAmountInput').value) || 0;
+        const walletSynced = document.getElementById('debtSyncWalletCheck').checked;
+        if (!person || amt <= 0) return;
+
+        state.debts.push({
+          id: 'd_' + Date.now(),
+          person,
+          original: amt,
+          remaining: amt,
+          walletSynced,
+          settledWithWallet: false
+        });
+        e.target.reset();
+        saveState();
+        renderAll();
+        closeModal('logDebtModal');
+        showToast(walletSynced ? `Borrowed ${formatMoney(amt)} added to wallet! 🤝` : 'Borrowed logged (Track Only) 🤝');
+      });
+
+      document.getElementById('logLentForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const person = document.getElementById('lentPersonInput').value.trim();
+        const amt = Number(document.getElementById('lentAmountInput').value) || 0;
+        const walletSynced = document.getElementById('lentSyncWalletCheck').checked;
+        if (!person || amt <= 0) return;
+
+        state.lent.push({
+          id: 'l_' + Date.now(),
+          person,
+          original: amt,
+          remaining: amt,
+          walletSynced,
+          settledWithWallet: false
+        });
+        e.target.reset();
+        saveState();
+        renderAll();
+        closeModal('logLentModal');
+        showToast(walletSynced ? `Lent ${formatMoney(amt)} deducted from wallet 💸` : 'Lent logged (Track Only) 💸');
+      });
+
+      document.getElementById('debtsList').addEventListener('click', (e) => {
+        const payBtn = e.target.closest('[data-pay-debt]');
+        if (payBtn) {
+          const d = state.debts.find(x => x.id === payBtn.getAttribute('data-pay-debt'));
+          if (d) {
+            pendingSettlement = { type: 'debt', id: d.id };
+            document.getElementById('settleLoanTitle').textContent = `Pay Back ${d.person} 🤝`;
+            document.getElementById('settleLoanDesc').textContent = d.walletSynced
+              ? `This ${formatMoney(d.remaining)} loan was added to your wallet when borrowed. Paying it back now will deduct ${formatMoney(d.remaining)} from your wallet once.`
+              : `This ${formatMoney(d.remaining)} loan was logged as Track Only (never added to your wallet). Keep unchecked to avoid double-deducting if you already logged the expense.`;
+            document.getElementById('settleAffectWalletCheck').checked = d.walletSynced;
+            document.getElementById('settleAffectWalletLabel').textContent = `Deduct ${formatMoney(d.remaining)} from my main wallet balance`;
+            openModal('settleLoanModal');
+          }
+          return;
+        }
+        const delBtn = e.target.closest('[data-delete-debt]');
+        if (delBtn) {
+          state.debts = state.debts.filter(x => x.id !== delBtn.getAttribute('data-delete-debt'));
+          saveState();
+          renderAll();
+        }
+      });
+
+      document.getElementById('lentList').addEventListener('click', (e) => {
+        const paidBtn = e.target.closest('[data-mark-lent-paid]');
+        if (paidBtn) {
+          const l = state.lent.find(x => x.id === paidBtn.getAttribute('data-mark-lent-paid'));
+          if (l) {
+            pendingSettlement = { type: 'lent', id: l.id };
+            document.getElementById('settleLoanTitle').textContent = `Received from ${l.person} 💸`;
+            document.getElementById('settleLoanDesc').textContent = l.walletSynced
+              ? `This ${formatMoney(l.remaining)} was deducted from your wallet when lent. Marking it received will add ${formatMoney(l.remaining)} back to your wallet.`
+              : `This ${formatMoney(l.remaining)} was logged as Track Only. Check below if you want to add it to your main wallet balance.`;
+            document.getElementById('settleAffectWalletCheck').checked = l.walletSynced;
+            document.getElementById('settleAffectWalletLabel').textContent = `Add ${formatMoney(l.remaining)} back to my main wallet balance`;
+            openModal('settleLoanModal');
+          }
+          return;
+        }
+        const delBtn = e.target.closest('[data-delete-lent]');
+        if (delBtn) {
+          state.lent = state.lent.filter(x => x.id !== delBtn.getAttribute('data-delete-lent'));
+          saveState();
+          renderAll();
+        }
+      });
+
+      document.getElementById('confirmSettleLoanBtn').addEventListener('click', () => {
+        if (!pendingSettlement) return;
+        const affectWallet = document.getElementById('settleAffectWalletCheck').checked;
+
+        if (pendingSettlement.type === 'debt') {
+          const d = state.debts.find(x => x.id === pendingSettlement.id);
+          if (d) {
+            d.remaining = 0;
+            d.settledWithWallet = affectWallet;
+          }
+          showToast('Debt paid off! 🎉');
+        } else {
+          const l = state.lent.find(x => x.id === pendingSettlement.id);
+          if (l) {
+            l.remaining = 0;
+            l.settledWithWallet = affectWallet;
+          }
+          showToast('Money returned! 🎉');
+        }
+
+        pendingSettlement = null;
+        saveState();
+        renderAll();
+        closeModal('settleLoanModal');
+        launchConfetti();
+      });
+
+      // Reset
+      document.getElementById('openResetModalBtn').addEventListener('click', () => openModal('resetModal'));
+      document.getElementById('confirmResetBtn').addEventListener('click', () => {
+        state = {
+          initialCash: 0,
+          currency: state.currency,
+          activeMascot: state.activeMascot,
+          sceneMode: state.sceneMode,
+          widgets: [],
+          expenses: [],
+          savings: [],
+          peakSaved: 0,
+          unlockedMilestoneIds: [],
+          savingsMilestones: state.savingsMilestones,
+          roomPlacements: {},
+          forestPlacements: {},
+          debts: [],
+          lent: [],
+          sharedSpaces: [],
+          customCategories: state.customCategories,
+          quotes: JSON.parse(JSON.stringify(defaultQuotes)),
+          quoteMode: 'random'
+        };
+        selectedRoomItemId = null;
+        saveState();
+        renderAll();
+        showNextQuote(false);
+        closeModal('resetModal');
+        showToast('All data reset!');
+      });
+
+      // Export / Import JSON
+      document.getElementById('exportJsonBtn').addEventListener('click', () => {
+        const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `skz_flow_backup_${getTodayStr()}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast('Backup exported! 💾');
+      });
+
+      document.getElementById('importJsonInput').addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          try {
+            const p = JSON.parse(ev.target.result);
+            if (p && typeof p === 'object') {
+              const importedSavings = Array.isArray(p.savings) ? p.savings : [];
+              const importedSavedSum = importedSavings.reduce((sum, s) => sum + (Number(s.saved) || 0), 0);
+              state = {
+                initialCash: Number(p.initialCash) || 0,
+                currency: p.currency || '৳',
+                activeMascot: normalizeMascotKey(p.activeMascot),
+                sceneMode: p.sceneMode === 'forest' ? 'forest' : 'room',
+                widgets: Array.isArray(p.widgets) ? p.widgets : [],
+                expenses: Array.isArray(p.expenses) ? p.expenses : [],
+                savings: importedSavings,
+                peakSaved: Math.max(Number(p.peakSaved) || 0, importedSavedSum),
+                unlockedMilestoneIds: Array.isArray(p.unlockedMilestoneIds) ? p.unlockedMilestoneIds : [],
+                savingsMilestones: Array.isArray(p.savingsMilestones) && p.savingsMilestones.length > 0
+                  ? p.savingsMilestones.map(normalizeMilestone)
+                  : JSON.parse(JSON.stringify(defaultSavingsMilestones)),
+                roomPlacements: normalizePlacements(p.roomPlacements),
+                forestPlacements: normalizePlacements(p.forestPlacements),
+                debts: Array.isArray(p.debts) ? p.debts.map(normalizeLoanItem) : [],
+                lent: Array.isArray(p.lent) ? p.lent.map(normalizeLoanItem) : [],
+                sharedSpaces: Array.isArray(p.sharedSpaces) ? p.sharedSpaces.map(normalizeSharedSpace) : [],
+                customCategories: Array.isArray(p.customCategories) ? p.customCategories : [],
+                quotes: Array.isArray(p.quotes) && p.quotes.length > 0 ? p.quotes : JSON.parse(JSON.stringify(defaultQuotes)),
+                quoteMode: p.quoteMode === 'favorites' ? 'favorites' : 'random'
+              };
+              selectedRoomItemId = null;
+              syncSavingsUnlocks(false);
+              saveState();
+              renderAll();
+              showNextQuote(false);
+              showToast('Backup restored! 🐾✨');
+            }
+          } catch (err) {
+            showToast('Invalid backup file');
+          }
+        };
+        reader.readAsText(file);
+        e.target.value = '';
+      });
+
+      // --- INIT ---
+      loadState();
+      applyDarkMode(localStorage.getItem(DARK_KEY) === '1');
+      renderAll();
+      showNextQuote(false);
+    });
+  </script>
+</body>
+</html>
