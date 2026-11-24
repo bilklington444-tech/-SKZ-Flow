@@ -1,19 +1,17 @@
 {
   "name": "SKZ Flow",
   "short_name": "SKZ Flow",
-  "description": "Cozy Personal Budget, Savings & Room Tracker",
   "start_url": "/-SKZ-Flow/",
   "scope": "/-SKZ-Flow/",
   "display": "standalone",
-  "orientation": "portrait",
   "background_color": "#f5f3ff",
   "theme_color": "#8b5cf6",
   "icons": [
     {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='112' fill='%238b5cf6'/%3E%3Ctext x='256' y='330' font-size='240' text-anchor='middle' fill='white'%3E%F0%9F%90%BE%3C/text%3E%3C/svg%3E",
-      "sizes": "192x192 512x512",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "src": "IMG_c2d261f2-0cf2-4621-b3d6-e29a48db0d1f.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any"
     }
   ]
 }
